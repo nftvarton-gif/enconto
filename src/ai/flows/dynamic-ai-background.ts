@@ -40,8 +40,16 @@ const generateAiBackgroundFlow = ai.defineFlow(
   },
   async () => {
     const response = await generateAiBackgroundPrompt();
-    const svgContent = response.text;
+    let svgContent = response.text;
     
+    // Ensure the response is a valid SVG by cleaning it up
+    if (svgContent.includes('```svg')) {
+      svgContent = svgContent.split('```svg')[1].split('```')[0].trim();
+    } else if (!svgContent.trim().startsWith('<svg')) {
+      // If the response is not a valid SVG, create a fallback
+      svgContent = `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#7f5af0" offset="0%"/><stop stop-color="#2cb67d" offset="100%"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/></svg>`;
+    }
+
     const svgBase64 = Buffer.from(svgContent).toString('base64');
     const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
 
