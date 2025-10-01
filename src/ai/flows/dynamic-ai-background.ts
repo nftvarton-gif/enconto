@@ -37,15 +37,15 @@ const generateAiBackgroundFlow = ai.defineFlow(
           <stop offset="100%" stop-color="#0D0D0D"></stop>
         </radialGradient>
         <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#7f5af0" stop-opacity="0.3">
-                <animate attributeName="stop-color" values="#7f5af0; #2cb67d; #7f5af0" dur="10s" repeatCount="indefinite"></animate>
+            <stop offset="0%" stop-color="hsl(var(--primary))" stop-opacity="0.3">
+                <animate attributeName="stop-color" values="hsl(var(--primary)); hsl(var(--accent)); hsl(var(--primary))" dur="10s" repeatCount="indefinite"></animate>
             </stop>
-            <stop offset="100%" stop-color="#2cb67d" stop-opacity="0.3">
-                <animate attributeName="stop-color" values="#2cb67d; #7f5af0; #2cb67d" dur="10s" repeatCount="indefinite"></animate>
+            <stop offset="100%" stop-color="hsl(var(--accent))" stop-opacity="0.3">
+                <animate attributeName="stop-color" values="hsl(var(--accent)); hsl(var(--primary)); hsl(var(--accent))" dur="10s" repeatCount="indefinite"></animate>
             </stop>
         </linearGradient>
       </defs>
-      <rect width="100%" height="100%" fill="#0D0D0D"></rect>
+      <rect width="100%" height="100%" fill="hsl(var(--background))"></rect>
       <rect width="100%" height="100%" fill="url(#lg1)"></rect>
       <rect width="100%" height="100%" fill="url(#g)"></rect>
     </svg>`;
