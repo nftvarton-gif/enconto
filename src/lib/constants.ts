@@ -48,11 +48,6 @@ export const SERVICES = [
     icon: LinkIcon,
   },
   {
-    title: "Blockchain & Crypto Consulting",
-    description: "Expert guidance on leveraging Web3 technologies for your business.",
-    icon: Code2,
-  },
-  {
     title: "Custom SaaS Solutions",
     description: "Tailor-made SaaS platforms to meet your unique business requirements.",
     icon: ShieldCheck,
