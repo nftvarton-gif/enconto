@@ -18,7 +18,7 @@ export function FeaturesSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {FEATURES.map((feature, index) => (
             <AnimateOnScroll key={feature.title} delay={index * 100}>
-              <Card className="h-full text-center border-2 border-transparent hover:border-primary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-2">
+              <Card className="h-full text-center border-2 border-transparent hover:border-primary hover:shadow-neon-primary transition-all duration-300 hover:-translate-y-2">
                 <CardHeader>
                   <div className="flex justify-center mb-4">
                     <div className="p-4 bg-primary/10 rounded-full text-primary">

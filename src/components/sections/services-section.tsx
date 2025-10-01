@@ -16,7 +16,7 @@ export function ServicesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {SERVICES.map((service, index) => (
             <AnimateOnScroll key={service.title} delay={index * 100} className="flex">
-              <Card className="w-full flex flex-col bg-card/50 backdrop-blur-sm border-border/50 hover:bg-card transition-colors duration-300">
+              <Card className="w-full flex flex-col bg-card/50 backdrop-blur-sm border-border/50 hover:bg-card hover:shadow-neon-accent transition-all duration-300">
                 <CardHeader className="flex flex-row items-center gap-4">
                   <div className="p-3 bg-accent/10 rounded-lg text-accent">
                     <service.icon className="w-6 h-6" />
