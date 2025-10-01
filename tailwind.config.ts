@@ -80,7 +80,9 @@ export default {
       },
       boxShadow: {
         'neon-primary': '0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary) / 0.8), 0 0 15px hsl(var(--primary) / 0.6)',
+        'neon-primary-sm': '0 0 3px hsl(var(--primary) / 0.8), 0 0 5px hsl(var(--primary) / 0.5)',
         'neon-accent': '0 0 5px hsl(var(--accent)), 0 0 10px hsl(var(--accent) / 0.8), 0 0 15px hsl(var(--accent) / 0.6)',
+        'neon-accent-sm': '0 0 3px hsl(var(--accent) / 0.8), 0 0 5px hsl(var(--accent) / 0.5)',
       },
       keyframes: {
         'accordion-down': {
