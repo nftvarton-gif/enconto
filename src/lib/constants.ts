@@ -1,4 +1,4 @@
-import { Bot, Zap, Plug, TrendingUp, Code2, Users, Blocks, Link as LinkIcon, ShieldCheck, Linkedin, Mail, Phone, MessageSquare } from "lucide-react";
+import { Bot, Zap, Plug, TrendingUp, Code2, Users, Blocks, Link as LinkIcon, ShieldCheck, Linkedin, Mail, Phone, MessageSquare, Database, Share2, Component, Waypoints } from "lucide-react";
 import { TikTokIcon, TelegramIcon } from "@/components/icons";
 
 export const NAV_LINKS = [
@@ -108,7 +108,7 @@ export const SOCIAL_LINKS = [
     {
         name: 'Telegram',
         icon: TelegramIcon,
-        href: '#',
+        href: 'https://t.me/gptstop',
     },
     {
         name: 'LinkedIn',
@@ -125,20 +125,28 @@ export const SOCIAL_LINKS = [
 export const CONTACT_DETAILS = [
     {
         name: 'Email',
-        value: 'contact@enconto.net',
+        value: 'alanol@enconto.net',
         icon: Mail,
-        href: 'mailto:contact@enconto.net'
+        href: 'mailto:alanol@enconto.net'
     },
     {
         name: 'WhatsApp',
-        value: '(+995) 123-4567',
+        value: '+995 511 488 185',
         icon: Phone,
-        href: 'https://wa.me/9951234567'
+        href: 'https://wa.me/995511488185'
     },
     {
         name: 'Telegram',
-        value: '@encontoAI',
+        value: '@gptstop',
         icon: MessageSquare,
-        href: 'https://t.me/encontoAI'
+        href: 'https://t.me/gptstop'
     },
 ]
+
+export const INTEGRATIONS = [
+    { name: "Social Media APIs", icon: Share2 },
+    { name: "AI Platforms", icon: Bot },
+    { name: "Custom Integrations", icon: Component },
+    { name: "CRM Systems", icon: Database },
+    { name: "Workflow Tools", icon: Waypoints },
+];
