@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useSearchParams } from 'next/navigation';
 
 import { submitContactForm, type ContactFormState } from '@/app/actions';
 import { Button } from '@/components/ui/button';
@@ -42,10 +43,11 @@ function SubmitButton() {
   );
 }
 
-export function ContactForm() {
+function ContactFormComponent() {
   const { toast } = useToast();
   const initialState: ContactFormState = { message: null, status: null };
   const [state, formAction] = useActionState(submitContactForm, initialState);
+  const searchParams = useSearchParams();
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -57,12 +59,23 @@ export function ContactForm() {
   });
 
   useEffect(() => {
+    const message = searchParams.get('message');
+    if (message) {
+      form.setValue('message', message);
+    }
+  }, [searchParams, form]);
+
+  useEffect(() => {
     if (state.status === 'success') {
       toast({
         title: 'Message Sent!',
         description: state.message,
       });
       form.reset();
+       // Clear the query param after successful submission
+      const newUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, '', newUrl);
+
     } else if (state.status === 'error') {
       toast({
         title: 'Error',
@@ -121,4 +134,13 @@ export function ContactForm() {
         </form>
     </Form>
   );
+}
+
+
+export function ContactForm() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ContactFormComponent />
+        </Suspense>
+    )
 }
