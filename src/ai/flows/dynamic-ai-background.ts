@@ -39,17 +39,28 @@ const generateAiBackgroundFlow = ai.defineFlow(
     outputSchema: GenerateAiBackgroundOutputSchema,
   },
   async () => {
-    const response = await generateAiBackgroundPrompt();
-    let svgContent = response.text;
-    
-    // Ensure the response is a valid SVG by cleaning it up
-    if (svgContent.includes('```svg')) {
-      svgContent = svgContent.split('```svg')[1].split('```')[0].trim();
-    } else if (!svgContent.trim().startsWith('<svg')) {
-      // If the response is not a valid SVG, create a fallback
-      svgContent = `<svg width="100%" height="100%" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" stop-color="#0D0D0D" stop-opacity="0"></stop><stop offset="100%" stop-color="#0D0D0D"></stop></radialGradient><linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7f5af0" stop-opacity="0.3"></stop><stop offset="100%" stop-color="#2cb67d" stop-opacity="0.3"></stop></linearGradient></defs><rect width="100%" height="100%" fill="#0D0D0D"></rect><rect width="100%" height="100%" fill="url(#lg1)"></rect><rect width="100%" height="100%" fill="url(#g)"></rect></svg>`;
-    }
+    let svgContent = `<svg width="100%" height="100%" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" stop-color="#0D0D0D" stop-opacity="0"></stop><stop offset="100%" stop-color="#0D0D0D"></stop></radialGradient><linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7f5af0" stop-opacity="0.3"></stop><stop offset="100%" stop-color="#2cb67d" stop-opacity="0.3"></stop></linearGradient></defs><rect width="100%" height="100%" fill="#0D0D0D"></rect><rect width="100%" height="100%" fill="url(#lg1)"></rect><rect width="100%" height="100%" fill="url(#g)"></rect></svg>`;
 
+    try {
+      const response = await generateAiBackgroundPrompt();
+      const aiText = response.text;
+      
+      if (aiText) {
+          let extractedSvg = aiText;
+          if (aiText.includes('```svg')) {
+            extractedSvg = aiText.split('```svg')[1].split('```')[0].trim();
+          } else if (aiText.includes('<svg')) {
+            extractedSvg = aiText.substring(aiText.indexOf('<svg'));
+          }
+          
+          if (extractedSvg.trim().startsWith('<svg') && extractedSvg.trim().endsWith('</svg>')) {
+              svgContent = extractedSvg;
+          }
+      }
+    } catch (error) {
+        console.error("AI background generation failed, using fallback.", error);
+    }
+    
     const svgBase64 = Buffer.from(svgContent).toString('base64');
     const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
 
