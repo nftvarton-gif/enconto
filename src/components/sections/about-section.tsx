@@ -32,7 +32,7 @@ export function AboutSection() {
             </div>
           </AnimateOnScroll>
           <AnimateOnScroll delay={200}>
-            <div className="relative aspect-[6/5] w-full rounded-xl overflow-hidden shadow-2xl shadow-primary/10">
+            <div className="relative aspect-video w-full rounded-xl overflow-hidden shadow-2xl shadow-primary/10">
               {aboutImage && (
                 <Image
                   src={aboutImage.imageUrl}
