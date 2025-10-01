@@ -14,7 +14,7 @@ const GenerateAiBackgroundOutputSchema = z.object({
   backgroundImageDataUri: z
     .string()
     .describe(
-      'The data URI of the generated AI background image, which must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.'  
+      'The data URI of the generated AI background image, which must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.'
     ),
 });
 export type GenerateAiBackgroundOutput = z.infer<typeof GenerateAiBackgroundOutputSchema>;
@@ -25,12 +25,12 @@ export async function generateAiBackground(): Promise<GenerateAiBackgroundOutput
 
 const generateAiBackgroundPrompt = ai.definePrompt({
   name: 'generateAiBackgroundPrompt',
-  output: {schema: GenerateAiBackgroundOutputSchema},
-  prompt: `Generate a visually engaging abstract AI background image suitable for the hero section of a website. The website is for a company specializing in AI automations, n8n integrations, and SaaS solutions for business.
+  prompt: `You are an expert SVG designer. Generate a visually engaging abstract SVG background suitable for the hero section of a website. The website is for a company specializing in AI automations, n8n integrations, and SaaS solutions for business.
 
-The design should reflect current design trends and use a dark color palette with violet (#7f5af0) and green (#2cb67d) accents. The image should be provided as a data URI.
+The design should reflect current design trends and use a dark color palette with violet (#7f5af0) and green (#2cb67d) accents. The SVG should be self-contained and not reference external files.
 
-Output only the data URI for the image.`,
+Output only the raw SVG code, starting with <svg> and ending with </svg>. Do not wrap it in markdown or any other characters.
+`,
 });
 
 const generateAiBackgroundFlow = ai.defineFlow(
@@ -39,15 +39,12 @@ const generateAiBackgroundFlow = ai.defineFlow(
     outputSchema: GenerateAiBackgroundOutputSchema,
   },
   async () => {
-    const {media} = await ai.generate({
-      model: 'googleai/imagen-4.0-fast-generate-001',
-      prompt: `Generate a visually engaging abstract AI background image suitable for the hero section of a website. The website is for a company specializing in AI automations, n8n integrations, and SaaS solutions for business.\n\nThe design should reflect current design trends and use a dark color palette with violet (#7f5af0) and green (#2cb67d) accents. The image should be provided as a data URI.`,
-    });
+    const response = await generateAiBackgroundPrompt();
+    const svgContent = response.text;
+    
+    const svgBase64 = Buffer.from(svgContent).toString('base64');
+    const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
 
-    if (!media || !media.url) {
-      throw new Error('Failed to generate AI background image.');
-    }
-
-    return {backgroundImageDataUri: media.url};
+    return {backgroundImageDataUri: dataUri};
   }
 );
