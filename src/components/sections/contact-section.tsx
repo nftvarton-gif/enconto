@@ -1,11 +1,12 @@
 'use client';
+import { useState } from 'react';
 import { ContactForm } from "@/components/contact-form";
 import { CONTACT_DETAILS } from "@/lib/constants";
 import { AnimateOnScroll } from "../ui/animate-on-scroll";
 import { Link } from "next-intl";
 import { useTranslations } from "next-intl";
 
-export function ContactSection() {
+export function ContactSection({ prefillMessage }: { prefillMessage?: string }) {
     const t = useTranslations('Contact');
     const c = useTranslations('Constants');
 
@@ -22,7 +23,7 @@ export function ContactSection() {
                     <AnimateOnScroll>
                         <div className="bg-card p-8 rounded-lg border border-border/50">
                             <h3 className="text-2xl font-bold mb-6">{t('formTitle')}</h3>
-                             <ContactForm />
+                             <ContactForm prefillMessage={prefillMessage} />
                         </div>
                     </AnimateOnScroll>
                      <AnimateOnScroll delay={200}>

@@ -1,5 +1,4 @@
 'use client';
-import { Link } from 'next-intl';
 import { Check, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { AnimateOnScroll } from '@/components/ui/animate-on-scroll';
 import { useTranslations } from 'next-intl';
 
-export function PricingSection() {
+export function PricingSection({ onPlanSelect }: { onPlanSelect: (message: string) => void }) {
   const t = useTranslations('Pricing');
   
   const PRICING_PLANS = {
@@ -101,15 +100,12 @@ export function PricingSection() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild className="w-full" variant={plan.isPopular ? 'default' : 'outline'}>
-                     <Link 
-                        href={{
-                          pathname: '/#contact',
-                          query: { prefill: plan.message }
-                        }}
-                      >
-                        {plan.cta}
-                      </Link>
+                  <Button 
+                    className="w-full" 
+                    variant={plan.isPopular ? 'default' : 'outline'}
+                    onClick={() => onPlanSelect(plan.message)}
+                  >
+                    {plan.cta}
                   </Button>
                 </CardFooter>
               </Card>

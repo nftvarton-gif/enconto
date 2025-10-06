@@ -21,7 +21,6 @@ function LanguageSwitcher() {
     const locale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
-    const [selectedLanguage, setSelectedLanguage] = useState(() => LANGUAGE_OPTIONS.find(l => l.code === locale) || LANGUAGE_OPTIONS[0]);
 
     const switchLocale = (newLocale: string) => {
         router.replace(pathname, {locale: newLocale});
@@ -40,7 +39,7 @@ function LanguageSwitcher() {
                     <DropdownMenuItem
                         key={lang.code}
                         onSelect={() => switchLocale(lang.code)}
-                        className={cn("flex items-center gap-2", selectedLanguage.code === lang.code && "bg-accent")}
+                        className={cn("flex items-center gap-2", locale === lang.code && "bg-accent")}
                     >
                         <span>{lang.flag}</span>
                         <span>{lang.name}</span>
@@ -54,7 +53,6 @@ function LanguageSwitcher() {
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const t = useTranslations('Header');
-  const pathname = usePathname();
   
   const NAV_LINKS = [
     { href: "/", label: t('nav.home') },

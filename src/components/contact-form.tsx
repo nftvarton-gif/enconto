@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect, Suspense } from 'react';
+import { useEffect } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useSearchParams } from 'next/navigation';
 
 import { submitContactForm, type ContactFormState } from '@/app/actions';
 import { Button } from '@/components/ui/button';
@@ -17,13 +16,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Loader2, Send } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-const contactFormSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  message: z.string().min(10, { message: 'Message must be at least 10 characters long.' }),
-});
-
-type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -45,109 +37,98 @@ function SubmitButton() {
   );
 }
 
-function ContactFormComponent() {
-  const t = useTranslations('Contact.form');
-  const { toast } = useToast();
-  const initialState: ContactFormState = { message: null, status: null };
-  const [state, formAction] = useActionState(submitContactForm, initialState);
-  const searchParams = useSearchParams();
+export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
+    const t = useTranslations('Contact.form');
+    const { toast } = useToast();
+    const initialState: ContactFormState = { message: null, status: null };
+    const [state, formAction] = useActionState(submitContactForm, initialState);
 
-  const formSchema = z.object({
-    name: z.string().min(2, { message: t('validation.name.min') }),
-    email: z.string().email({ message: t('validation.email.invalid') }),
-    message: z.string().min(10, { message: t('validation.message.min') }),
-  });
+    const formSchema = z.object({
+        name: z.string().min(2, { message: t('validation.name.min') }),
+        email: z.string().email({ message: t('validation.email.invalid') }),
+        message: z.string().min(10, { message: t('validation.message.min') }),
+    });
 
-  const form = useForm<ContactFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      message: '',
-    },
-  });
+    type ContactFormValues = z.infer<typeof formSchema>;
 
-  useEffect(() => {
-    const prefillMessage = searchParams.get('prefill');
-    if (prefillMessage) {
-        form.setValue('message', prefillMessage);
-        // This is a client-side only operation, so we can safely access window
-        const newUrl = window.location.pathname + window.location.hash.replace(/\?.*$/, '');
-        window.history.replaceState({}, '', newUrl);
-    }
-  }, [searchParams, form]);
+    const form = useForm<ContactFormValues>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+        name: '',
+        email: '',
+        message: '',
+        },
+    });
 
-  useEffect(() => {
-    if (state.status === 'success') {
-      toast({
-        title: t('toast.success.title'),
-        description: t('toast.success.description'),
-      });
-      form.reset();
-    } else if (state.status === 'error') {
-      toast({
-        title: t('toast.error.title'),
-        description: state.message,
-        variant: 'destructive',
-      });
-      state.fieldErrors?.name && form.setError('name', { message: state.fieldErrors.name[0] });
-      state.fieldErrors?.email && form.setError('email', { message: state.fieldErrors.email[0] });
-      state.fieldErrors?.message && form.setError('message', { message: state.fieldErrors.message[0] });
-    }
-  }, [state, toast, form, t]);
+    useEffect(() => {
+        if (prefillMessage) {
+            form.setValue('message', prefillMessage);
+        }
+    }, [prefillMessage, form]);
 
-  return (
-    <Form {...form}>
-        <form action={formAction} className="space-y-6">
-            <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{t('name.label')}</FormLabel>
-                        <FormControl>
-                            <Input placeholder={t('name.placeholder')} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{t('email.label')}</FormLabel>
-                        <FormControl>
-                            <Input placeholder={t('email.placeholder')} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{t('message.label')}</FormLabel>
-                        <FormControl>
-                            <Textarea placeholder={t('message.placeholder')} {...field} rows={5} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <SubmitButton />
-        </form>
-    </Form>
-  );
-}
+    useEffect(() => {
+        if (state.status === 'success') {
+        toast({
+            title: t('toast.success.title'),
+            description: t('toast.success.description'),
+        });
+        form.reset();
+        } else if (state.status === 'error') {
+        toast({
+            title: t('toast.error.title'),
+            description: state.message,
+            variant: 'destructive',
+        });
+        state.fieldErrors?.name && form.setError('name', { message: state.fieldErrors.name[0] });
+        state.fieldErrors?.email && form.setError('email', { message: state.fieldErrors.email[0] });
+        state.fieldErrors?.message && form.setError('message', { message: state.fieldErrors.message[0] });
+        }
+    }, [state, toast, form, t]);
 
-export function ContactForm() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <ContactFormComponent />
-        </Suspense>
-    )
+        <Form {...form}>
+            <form action={formAction} className="space-y-6">
+                <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{t('name.label')}</FormLabel>
+                            <FormControl>
+                                <Input placeholder={t('name.placeholder')} {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{t('email.label')}</FormLabel>
+                            <FormControl>
+                                <Input placeholder={t('email.placeholder')} {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{t('message.label')}</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder={t('message.placeholder')} {...field} rows={5} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <SubmitButton />
+            </form>
+        </Form>
+    );
 }

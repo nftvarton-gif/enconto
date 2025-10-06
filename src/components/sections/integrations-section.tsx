@@ -1,10 +1,9 @@
 'use client'
-import { Link } from 'next-intl';
 import { AnimateOnScroll } from "../ui/animate-on-scroll";
 import { Database, Bot, Share2, Component, Waypoints } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export function IntegrationsSection() {
+export function IntegrationsSection({ onIntegrationSelect }: { onIntegrationSelect: (message: string) => void }) {
     const t = useTranslations('Integrations');
 
     const integrations = [
@@ -45,12 +44,9 @@ export function IntegrationsSection() {
                 <AnimateOnScroll delay={200}>
                     <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8">
                         {integrations.map((integration) => (
-                             <Link 
+                             <button 
                                 key={integration.name}
-                                href={{
-                                  pathname: '/#contact',
-                                  query: { prefill: integration.message }
-                                }}
+                                onClick={() => onIntegrationSelect(integration.message)}
                                 className="flex flex-col items-center gap-2 text-center group"
                              >
                                 <integration.icon 
@@ -58,7 +54,7 @@ export function IntegrationsSection() {
                                     aria-label={integration.name}
                                 />
                                 <span className="text-sm text-muted-foreground/80 transition-colors duration-300 group-hover:text-foreground">{integration.name}</span>
-                            </Link>
+                            </button>
                         ))}
                     </div>
                 </AnimateOnScroll>
