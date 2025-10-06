@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next-intl/navigation';
 
 import { submitContactForm, type ContactFormState } from '@/app/actions';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Loader2, Send } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next-intl/navigation';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),

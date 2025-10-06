@@ -55,7 +55,6 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const t = useTranslations('Header');
   const pathname = usePathname();
-  const locale = useLocale();
   
   const NAV_LINKS = [
     { href: "/", label: t('nav.home') },
@@ -72,14 +71,6 @@ export function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const isLinkActive = (href: string) => {
-    // This logic needs to be aware of the locale in the path
-    const currentPath = `/${locale}${href === '/' ? '' : href}`;
-    if (href === '/') return pathname === `/${locale}` || pathname === '/';
-    return pathname.startsWith(currentPath);
-  }
-
 
   return (
     <header
