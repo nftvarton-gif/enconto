@@ -49,7 +49,7 @@ export function IntegrationsSection() {
                                 key={integration.name}
                                 href={{
                                   pathname: '/#contact',
-                                  query: { message: integration.message }
+                                  query: { prefill: integration.message }
                                 }}
                                 className="flex flex-col items-center gap-2 text-center group"
                              >

@@ -1,13 +1,12 @@
 'use client';
 
-import { Suspense, useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next-intl/navigation';
 
 import { submitContactForm, type ContactFormState } from '@/app/actions';
 import { Button } from '@/components/ui/button';
@@ -52,7 +51,6 @@ function ContactFormComponent() {
   const initialState: ContactFormState = { message: null, status: null };
   const [state, formAction] = useActionState(submitContactForm, initialState);
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const formSchema = z.object({
     name: z.string().min(2, { message: t('validation.name.min') }),
@@ -70,9 +68,12 @@ function ContactFormComponent() {
   });
 
   useEffect(() => {
-    const message = searchParams.get('message');
-    if (message) {
-      form.setValue('message', message);
+    const prefillMessage = searchParams.get('prefill');
+    if (prefillMessage) {
+        form.setValue('message', prefillMessage);
+        // This is a client-side only operation, so we can safely access window
+        const newUrl = window.location.pathname + window.location.hash.replace(/\?.*$/, '');
+        window.history.replaceState({}, '', newUrl);
     }
   }, [searchParams, form]);
 
@@ -83,9 +84,6 @@ function ContactFormComponent() {
         description: t('toast.success.description'),
       });
       form.reset();
-      const newUrl = window.location.pathname + window.location.hash.replace(/\?.*$/, '');
-      window.history.replaceState({}, '', newUrl);
-
     } else if (state.status === 'error') {
       toast({
         title: t('toast.error.title'),
@@ -145,7 +143,6 @@ function ContactFormComponent() {
     </Form>
   );
 }
-
 
 export function ContactForm() {
     return (

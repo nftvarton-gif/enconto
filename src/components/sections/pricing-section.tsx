@@ -102,10 +102,14 @@ export function PricingSection() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild className="w-full" variant={plan.isPopular ? 'default' : 'outline'}>
-                    <Link href={{
-                      pathname: '/#contact',
-                      query: { message: plan.message }
-                    }}>{plan.cta}</Link>
+                     <Link 
+                        href={{
+                          pathname: '/#contact',
+                          query: { prefill: plan.message }
+                        }}
+                      >
+                        {plan.cta}
+                      </Link>
                   </Button>
                 </CardFooter>
               </Card>
