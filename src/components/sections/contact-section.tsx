@@ -1,9 +1,8 @@
 'use client';
-import { useState } from 'react';
 import { ContactForm } from "@/components/contact-form";
 import { CONTACT_DETAILS } from "@/lib/constants";
 import { AnimateOnScroll } from "../ui/animate-on-scroll";
-import { Link } from "next-intl";
+import { Link } from "next-intl/navigation";
 import { useTranslations } from "next-intl";
 
 export function ContactSection({ prefillMessage }: { prefillMessage?: string }) {
@@ -39,9 +38,9 @@ export function ContactSection({ prefillMessage }: { prefillMessage?: string }) 
                                     </div>
                                     <div>
                                         <h4 className="font-semibold">{c(detail.name as any)}</h4>
-                                        <Link href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
+                                        <a href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
                                             {detail.value}
-                                        </Link>
+                                        </a>
                                     </div>
                                </div>
                            ))}

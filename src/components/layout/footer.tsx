@@ -1,4 +1,5 @@
-import { Link } from 'next-intl';
+"use client";
+import { Link } from 'next-intl/navigation';
 import { EncontoLogo } from '@/components/icons';
 import { CONTACT_DETAILS } from '@/lib/constants';
 import { useTranslations } from 'next-intl';
@@ -54,9 +55,9 @@ export function Footer() {
                   <div className="text-primary">
                     <detail.icon className="w-5 h-5"/>
                   </div>
-                  <Link href={detail.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <a href={detail.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                     {c(detail.name as any) === 'Email' ? detail.value : detail.value}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
