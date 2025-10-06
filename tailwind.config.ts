@@ -113,6 +113,18 @@ export default {
             from: { opacity: '0', transform: 'translateY(-20px)' },
             to: { opacity: '1', transform: 'translateY(0)' },
         },
+        'blob-1': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '25%': { transform: 'translate(20%, -10%) scale(1.1)' },
+          '50%': { transform: 'translate(-15%, 15%) scale(0.9)' },
+          '75%': { transform: 'translate(10%, 5%) scale(1.05)' },
+        },
+        'blob-2': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '25%': { transform: 'translate(-15%, 10%) scale(0.9)' },
+          '50%': { transform: 'translate(20%, -15%) scale(1.1)' },
+          '75%': { transform: 'translate(-10%, -5%) scale(1.05)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -120,6 +132,8 @@ export default {
         'fade-in': 'fade-in 0.5s ease-out forwards',
         'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
         'fade-in-down': 'fade-in-down 0.5s ease-out forwards',
+        'blob-1': 'blob-1 15s infinite ease-in-out',
+        'blob-2': 'blob-2 18s infinite ease-in-out',
       },
     },
   },

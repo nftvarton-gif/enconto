@@ -9,6 +9,12 @@ export const NAV_LINKS = [
   { href: "/#contact", label: "Contact" },
 ];
 
+export const LANGUAGE_OPTIONS = [
+  { name: 'English', code: 'en', flag: '🇬🇧' },
+  { name: 'Русский', code: 'ru', flag: '🇷🇺' },
+  { name: '中文', code: 'zh', flag: '🇨🇳' },
+]
+
 export const FEATURES = [
   {
     icon: Zap,
