@@ -18,6 +18,7 @@ export function HeroSection() {
         setBgImage(result.backgroundImageDataUri);
       } catch (error) {
         console.error('Failed to generate AI background:', error);
+        // Fallback to a simple gradient if the flow fails
         setBgImage('linear-gradient(to bottom right, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3))');
       } finally {
         setIsLoading(false);
