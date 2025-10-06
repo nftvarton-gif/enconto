@@ -1,15 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES } from '@/lib/constants';
 import { AnimateOnScroll } from '../ui/animate-on-scroll';
+import { useTranslations } from 'next-intl';
 
 export function ServicesSection() {
+  const t = useTranslations('Services');
+  const c = useTranslations('Constants');
   return (
     <section id="services" className="py-20 lg:py-32 bg-secondary/30">
       <div className="container mx-auto px-4">
         <AnimateOnScroll className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold font-headline">Our Services</h2>
+          <h2 className="text-3xl md:text-4xl font-bold font-headline">{t('title')}</h2>
           <p className="text-lg text-muted-foreground mt-2 max-w-2xl mx-auto">
-            From workflow automation to custom SaaS solutions, we provide the expertise to elevate your business.
+            {t('subtitle')}
           </p>
         </AnimateOnScroll>
 
@@ -21,10 +24,10 @@ export function ServicesSection() {
                   <div className="p-3 bg-accent/10 rounded-lg text-accent">
                     <service.icon className="w-6 h-6" />
                   </div>
-                  <CardTitle className="text-xl font-semibold">{service.title}</CardTitle>
+                  <CardTitle className="text-xl font-semibold">{c(service.title as any)}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
-                  <p className="text-muted-foreground">{service.description}</p>
+                  <p className="text-muted-foreground">{c(service.description as any)}</p>
                 </CardContent>
               </Card>
             </AnimateOnScroll>

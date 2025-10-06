@@ -1,8 +1,21 @@
-import Link from 'next/link';
+import Link from 'next-intl';
 import { EncontoLogo } from '@/components/icons';
-import { NAV_LINKS, CONTACT_DETAILS } from '@/lib/constants';
+import { CONTACT_DETAILS } from '@/lib/constants';
+import { useTranslations } from 'next-intl';
 
 export function Footer() {
+  const t = useTranslations('Footer');
+  const h = useTranslations('Header');
+  const c = useTranslations('Constants');
+
+  const NAV_LINKS = [
+    { href: "/", label: h('nav.home') },
+    { href: "/#services", label: h('nav.services') },
+    { href: "/#pricing", label: h('nav.pricing') },
+    { href: "/#about", label: h('nav.about') },
+    { href: "/#contact", label: h('nav.contact') },
+  ];
+
   return (
     <footer className="border-t border-border/50 bg-secondary/30">
       <div className="container mx-auto py-16 px-4">
@@ -14,13 +27,13 @@ export function Footer() {
                 <span className="font-headline">EncontoAI</span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
-                Empowering businesses with AI-driven automations and intelligent agent solutions for superior growth and efficiency.
+                {t('tagline')}
             </p>
           </div>
           
           {/* Column 2: Quick Links */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4 text-lg">Quick Links</h3>
+            <h3 className="font-semibold text-foreground mb-4 text-lg">{t('quickLinks')}</h3>
             <ul className="space-y-3">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
@@ -34,15 +47,15 @@ export function Footer() {
 
           {/* Column 3: Contact Info */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4 text-lg">Contact Us</h3>
+            <h3 className="font-semibold text-foreground mb-4 text-lg">{t('contactUs')}</h3>
             <ul className="space-y-4">
               {CONTACT_DETAILS.map((detail) => (
-                <li key={detail.name} className="flex items-center gap-3">
+                <li key={detail.value} className="flex items-center gap-3">
                   <div className="text-primary">
                     <detail.icon className="w-5 h-5"/>
                   </div>
                   <Link href={detail.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    {detail.value}
+                    {c(detail.name as any) === 'Email' ? detail.value : detail.value}
                   </Link>
                 </li>
               ))}
@@ -53,7 +66,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border/50 text-center">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} EncontoAI. All rights reserved.
+            © {new Date().getFullYear()} EncontoAI. {t('rightsReserved')}
           </p>
         </div>
       </div>

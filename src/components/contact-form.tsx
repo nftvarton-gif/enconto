@@ -15,6 +15,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Loader2, Send } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -26,17 +28,18 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const t = useTranslations('Contact.form');
   return (
     <Button type="submit" disabled={pending} className="w-full">
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Sending...
+          {t('sending')}
         </>
       ) : (
         <>
           <Send className="mr-2 h-4 w-4" />
-          Send Message
+          {t('submit')}
         </>
       )}
     </Button>
@@ -44,13 +47,21 @@ function SubmitButton() {
 }
 
 function ContactFormComponent() {
+  const t = useTranslations('Contact.form');
   const { toast } = useToast();
   const initialState: ContactFormState = { message: null, status: null };
   const [state, formAction] = useActionState(submitContactForm, initialState);
   const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const formSchema = z.object({
+    name: z.string().min(2, { message: t('validation.name.min') }),
+    email: z.string().email({ message: t('validation.email.invalid') }),
+    message: z.string().min(10, { message: t('validation.message.min') }),
+  });
 
   const form = useForm<ContactFormValues>({
-    resolver: zodResolver(contactFormSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -68,17 +79,16 @@ function ContactFormComponent() {
   useEffect(() => {
     if (state.status === 'success') {
       toast({
-        title: 'Message Sent!',
-        description: state.message,
+        title: t('toast.success.title'),
+        description: t('toast.success.description'),
       });
       form.reset();
-       // Clear the query param after successful submission
-      const newUrl = window.location.pathname + window.location.hash;
+      const newUrl = window.location.pathname + window.location.hash.replace(/\?.*$/, '');
       window.history.replaceState({}, '', newUrl);
 
     } else if (state.status === 'error') {
       toast({
-        title: 'Error',
+        title: t('toast.error.title'),
         description: state.message,
         variant: 'destructive',
       });
@@ -86,7 +96,7 @@ function ContactFormComponent() {
       state.fieldErrors?.email && form.setError('email', { message: state.fieldErrors.email[0] });
       state.fieldErrors?.message && form.setError('message', { message: state.fieldErrors.message[0] });
     }
-  }, [state, toast, form]);
+  }, [state, toast, form, t]);
 
   return (
     <Form {...form}>
@@ -96,9 +106,9 @@ function ContactFormComponent() {
                 name="name"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Full Name</FormLabel>
+                        <FormLabel>{t('name.label')}</FormLabel>
                         <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input placeholder={t('name.placeholder')} {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -109,9 +119,9 @@ function ContactFormComponent() {
                 name="email"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Email Address</FormLabel>
+                        <FormLabel>{t('email.label')}</FormLabel>
                         <FormControl>
-                            <Input placeholder="you@example.com" {...field} />
+                            <Input placeholder={t('email.placeholder')} {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -122,9 +132,9 @@ function ContactFormComponent() {
                 name="message"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Your Message</FormLabel>
+                        <FormLabel>{t('message.label')}</FormLabel>
                         <FormControl>
-                            <Textarea placeholder="Tell us how we can help..." {...field} rows={5} />
+                            <Textarea placeholder={t('message.placeholder')} {...field} rows={5} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>

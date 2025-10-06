@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+
 import { EncontoLogo } from '@/components/icons';
-import { NAV_LINKS, LANGUAGE_OPTIONS } from '@/lib/constants';
+import { LANGUAGE_OPTIONS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, Globe } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
@@ -17,7 +19,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 function LanguageSwitcher() {
-    const [selectedLanguage, setSelectedLanguage] = useState(LANGUAGE_OPTIONS[0]);
+    const locale = useLocale();
+    const router = useRouter();
+    const pathname = usePathname();
+    const [selectedLanguage, setSelectedLanguage] = useState(() => LANGUAGE_OPTIONS.find(l => l.code === locale) || LANGUAGE_OPTIONS[0]);
+
+    const switchLocale = (newLocale: string) => {
+        router.replace(pathname, {locale: newLocale});
+    }
 
     return (
         <DropdownMenu>
@@ -31,7 +40,7 @@ function LanguageSwitcher() {
                 {LANGUAGE_OPTIONS.map((lang) => (
                     <DropdownMenuItem
                         key={lang.code}
-                        onSelect={() => setSelectedLanguage(lang)}
+                        onSelect={() => switchLocale(lang.code)}
                         className={cn("flex items-center gap-2", selectedLanguage.code === lang.code && "bg-accent")}
                     >
                         <span>{lang.flag}</span>
@@ -45,7 +54,16 @@ function LanguageSwitcher() {
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const t = useTranslations('Header');
   const pathname = usePathname();
+  
+  const NAV_LINKS = [
+    { href: "/", label: t('nav.home') },
+    { href: "/#services", label: t('nav.services') },
+    { href: "/#pricing", label: t('nav.pricing') },
+    { href: "/#about", label: t('nav.about') },
+    { href: "/#contact", label: t('nav.contact') },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,7 +92,7 @@ export function Header() {
               href={link.href}
               className={cn(
                 'text-sm font-medium transition-colors hover:text-primary',
-                (pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))) ? 'text-primary' : 'text-muted-foreground'
+                (pathname.endsWith(link.href)) ? 'text-primary' : 'text-muted-foreground'
               )}
             >
               {link.label}
@@ -84,7 +102,7 @@ export function Header() {
         <div className="hidden md:flex items-center gap-2">
           <LanguageSwitcher />
           <Button asChild>
-            <Link href="/#contact">Contact Us</Link>
+            <Link href="/#contact">{t('contactButton')}</Link>
           </Button>
         </div>
         <div className="md:hidden">
@@ -109,7 +127,7 @@ export function Header() {
                       href={link.href}
                       className={cn(
                         'text-lg font-medium transition-colors hover:text-primary',
-                        (pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))) ? 'text-primary' : 'text-foreground'
+                        (pathname.endsWith(link.href)) ? 'text-primary' : 'text-foreground'
                       )}
                     >
                       {link.label}
@@ -121,7 +139,7 @@ export function Header() {
                         <LanguageSwitcher />
                     </div>
                     <Button asChild className="w-full">
-                        <Link href="/#contact">Contact Us</Link>
+                        <Link href="/#contact">{t('contactButton')}</Link>
                     </Button>
                 </div>
               </div>

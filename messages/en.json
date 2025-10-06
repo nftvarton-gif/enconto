@@ -1,0 +1,234 @@
+
+{
+  "Header": {
+    "nav": {
+      "home": "Home",
+      "services": "Services",
+      "pricing": "Pricing",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "contactButton": "Contact Us"
+  },
+  "Hero": {
+    "title": "AI Automations & Smart Agents for <span>Business Growth</span>",
+    "subtitle": "Enconto helps businesses integrate automation, n8n-workflows and AI assistants to scale up.",
+    "cta": "Start Automation Today"
+  },
+  "Features": {
+    "title": "Our Advantages",
+    "subtitle": "Discover why businesses choose Enconto to power their growth and efficiency."
+  },
+  "Services": {
+    "title": "Our Services",
+    "subtitle": "From workflow automation to custom SaaS solutions, we provide the expertise to elevate your business."
+  },
+  "Pricing": {
+    "title": "Flexible Plans for Every Team",
+    "subtitle": "Choose the right plan to unlock the power of AI automation for your business.",
+    "mostPopular": "Most Popular",
+    "perMonth": "month",
+    "plans": {
+      "starter": {
+        "name": "Starter",
+        "price": "$49",
+        "description": "For individuals and small teams getting started with automation.",
+        "features": [
+          "10 AI Workflows",
+          "Access to 20+ Connectors",
+          "Basic Monitoring",
+          "Email Support"
+        ],
+        "cta": "Choose Starter",
+        "message": "Hello! I'm interested in the Starter plan."
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$99",
+        "description": "For growing businesses that need more power and support.",
+        "features": [
+          "50 AI Workflows",
+          "Access to 100+ Connectors",
+          "Advanced Monitoring & Logging",
+          "Priority Support",
+          "Access to Template Library"
+        ],
+        "cta": "Choose Pro",
+        "message": "Hello! I'm interested in the Pro plan."
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
+        "description": "For large organizations with specific security and scalability needs.",
+        "features": [
+          "Unlimited AI Workflows",
+          "Premium & Custom Connectors",
+          "SSO/SAML Integration",
+          "Dedicated Support & SLA",
+          "White-labeling Options"
+        ],
+        "cta": "Contact Sales",
+        "message": "Hello! I'd like to discuss the Enterprise plan for my organization."
+      }
+    }
+  },
+  "About": {
+    "title": "About EncontoAI",
+    "mission": "Our mission is to empower businesses with cutting-edge automation and AI technologies, enabling them to achieve unprecedented growth and efficiency. We value innovation, integrity, and a client-centric approach in everything we do."
+  },
+  "Integrations": {
+    "title": "Seamless Integrations",
+    "subtitle": "We connect with the tools you already use.",
+    "socialMedia": {
+      "name": "Social Media APIs",
+      "message": "Hello! I'm interested in learning more about your Social Media API integration services."
+    },
+    "aiPlatforms": {
+      "name": "AI Platforms",
+      "message": "Hello! I'd like to discuss how your AI Platform integration can benefit my business."
+    },
+    "custom": {
+      "name": "Custom Integrations",
+      "message": "Hello! I have a specific need for a custom integration and would like to learn about your services."
+    },
+    "crm": {
+      "name": "CRM Systems",
+      "message": "Hello! I'm interested in integrating our CRM system and would like to know more."
+    },
+    "workflow": {
+      "name": "Workflow Tools",
+      "message": "Hello! I want to optimize my processes and am interested in your workflow tool integration services."
+    }
+  },
+  "Testimonials": {
+    "title": "What Our Clients Say",
+    "subtitle": "Real stories from businesses we've helped to innovate and grow."
+  },
+  "Contact": {
+    "title": "Get in Touch",
+    "subtitle": "Have a project in mind or want to learn more? We'd love to hear from you.",
+    "formTitle": "Send us a message",
+    "infoTitle": "Contact Information",
+    "infoDescription": "Reach out to us directly through any of the channels below. We are available for a chat about your next big idea.",
+    "form": {
+      "name": {
+        "label": "Full Name",
+        "placeholder": "John Doe"
+      },
+      "email": {
+        "label": "Email Address",
+        "placeholder": "you@example.com"
+      },
+      "message": {
+        "label": "Your Message",
+        "placeholder": "Tell us how we can help..."
+      },
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "validation": {
+        "name": {
+          "min": "Name must be at least 2 characters."
+        },
+        "email": {
+          "invalid": "Please enter a valid email address."
+        },
+        "message": {
+          "min": "Message must be at least 10 characters long."
+        }
+      },
+      "toast": {
+        "success": {
+          "title": "Message Sent!",
+          "description": "Thank you for your message! We will get back to you soon."
+        },
+        "error": {
+          "title": "Error"
+        }
+      }
+    }
+  },
+  "Footer": {
+    "tagline": "Empowering businesses with AI-driven automations and intelligent agent solutions for superior growth and efficiency.",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "rightsReserved": "All rights reserved."
+  },
+  "Constants": {
+    "features": {
+      "fastDeployment": {
+        "title": "Fast Deployment",
+        "description": "Quickly integrate our solutions into your existing workflows with minimal downtime."
+      },
+      "aiAssistants": {
+        "title": "AI Assistants",
+        "description": "Leverage intelligent AI assistants to automate tasks and enhance productivity."
+      },
+      "integrations": {
+        "title": "100+ Integrations",
+        "description": "Connect with a vast ecosystem of tools and platforms to streamline your operations."
+      },
+      "boostGrowth": {
+        "title": "Boost Growth",
+        "description": "Scale your business and drive growth with our powerful automation and AI solutions."
+      }
+    },
+    "services": {
+      "n8n": {
+        "title": "n8n Workflow Development",
+        "description": "Custom n8n workflows to automate your business processes and connect your apps."
+      },
+      "aiAgents": {
+        "title": "AI Assistants & Agents",
+        "description": "Intelligent agents for customer support, data analysis, and internal process optimization."
+      },
+      "apiIntegrations": {
+        "title": "API Integrations",
+        "description": "Seamlessly connect services like TikTok API, CRMs, and payment gateways."
+      },
+      "customSaaS": {
+        "title": "Custom SaaS Solutions",
+        "description": "Tailor-made SaaS platforms to meet your unique business requirements."
+      }
+    },
+    "whyChooseUs": {
+      "expertise": {
+        "title": "Expertise in AI & Blockchain",
+        "description": "Our team consists of seasoned experts in artificial intelligence and blockchain technology."
+      },
+      "tailored": {
+        "title": "Tailored Solutions",
+        "description": "We don't believe in one-size-fits-all. Every solution is customized to your specific needs."
+      },
+      "results": {
+        "title": "Measurable Results",
+        "description": "We focus on delivering solutions that provide clear, measurable improvements to your bottom line."
+      },
+      "support": {
+        "title": "Dedicated Support",
+        "description": "Our team is always here to provide support and ensure your success."
+      }
+    },
+    "testimonials": {
+      "johnDoe": {
+        "text": "Enconto transformed our operations. The AI assistants have saved us hundreds of hours per month. Truly a game-changer!"
+      },
+      "janeSmith": {
+        "text": "The n8n workflow automation is seamless. Their team was professional, and the deployment was incredibly fast. Highly recommended!"
+      },
+      "samuelLee": {
+        "text": "Working with Enconto on our custom SaaS platform was a fantastic experience. They understood our vision and delivered beyond our expectations."
+      }
+    },
+    "contact": {
+      "email": {
+        "name": "Email"
+      },
+      "whatsapp": {
+        "name": "WhatsApp"
+      },
+      "telegram": {
+        "name": "Telegram"
+      }
+    }
+  }
+}
