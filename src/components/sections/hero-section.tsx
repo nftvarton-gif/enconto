@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Rocket } from 'lucide-react';
-import Link from 'next-intl';
+import { Link } from 'next-intl';
 import { useTranslations } from 'next-intl';
 
 export function HeroSection() {

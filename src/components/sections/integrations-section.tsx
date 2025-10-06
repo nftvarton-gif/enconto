@@ -1,5 +1,5 @@
 'use client'
-import Link from 'next-intl';
+import { Link } from 'next-intl';
 import { AnimateOnScroll } from "../ui/animate-on-scroll";
 import { Database, Bot, Share2, Component, Waypoints } from "lucide-react";
 import { useTranslations } from "next-intl";

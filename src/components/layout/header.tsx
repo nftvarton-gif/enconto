@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import Link from 'next-intl';
-import { useLocale, useTranslations } from 'next-intl';
+import { usePathname, useRouter } from 'next-intl/navigation';
+import { Link, useLocale, useTranslations } from 'next-intl';
 
 import { EncontoLogo } from '@/components/icons';
 import { LANGUAGE_OPTIONS } from '@/lib/constants';
@@ -56,6 +55,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const t = useTranslations('Header');
   const pathname = usePathname();
+  const locale = useLocale();
   
   const NAV_LINKS = [
     { href: "/", label: t('nav.home') },
@@ -72,6 +72,14 @@ export function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const isLinkActive = (href: string) => {
+    // This logic needs to be aware of the locale in the path
+    const currentPath = `/${locale}${href === '/' ? '' : href}`;
+    if (href === '/') return pathname === `/${locale}` || pathname === '/';
+    return pathname.startsWith(currentPath);
+  }
+
 
   return (
     <header
@@ -92,7 +100,7 @@ export function Header() {
               href={link.href}
               className={cn(
                 'text-sm font-medium transition-colors hover:text-primary',
-                (pathname.endsWith(link.href)) ? 'text-primary' : 'text-muted-foreground'
+                'text-muted-foreground'
               )}
             >
               {link.label}
@@ -127,7 +135,7 @@ export function Header() {
                       href={link.href}
                       className={cn(
                         'text-lg font-medium transition-colors hover:text-primary',
-                        (pathname.endsWith(link.href)) ? 'text-primary' : 'text-foreground'
+                        'text-foreground'
                       )}
                     >
                       {link.label}

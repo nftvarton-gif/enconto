@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next-intl';
+import { Link } from 'next-intl';
 import { Check, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';

@@ -2,7 +2,7 @@
 import { ContactForm } from "@/components/contact-form";
 import { CONTACT_DETAILS } from "@/lib/constants";
 import { AnimateOnScroll } from "../ui/animate-on-scroll";
-import Link from "next-intl";
+import { Link } from "next-intl";
 import { useTranslations } from "next-intl";
 
 export function ContactSection() {
