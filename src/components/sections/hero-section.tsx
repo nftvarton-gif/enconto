@@ -1,51 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { generateAiBackground } from '@/ai/flows/dynamic-ai-background';
 import { ArrowRight, Rocket } from 'lucide-react';
 import Link from 'next/link';
 
 export function HeroSection() {
-  const [bgImage, setBgImage] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBg = async () => {
-      try {
-        setIsLoading(true);
-        const result = await generateAiBackground();
-        setBgImage(result.backgroundImageDataUri);
-      } catch (error) {
-        console.error('Failed to generate AI background:', error);
-        // Fallback to a simple gradient if the flow fails
-        setBgImage('linear-gradient(to bottom right, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3))');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchBg();
-  }, []);
 
   return (
     <section
       id="home"
       className="relative w-full min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden"
     >
-      <div
-        className="absolute inset-0 transition-opacity duration-1000"
-        style={{
-          backgroundImage: bgImage.startsWith('data:') ? `url(${bgImage})` : bgImage,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: isLoading ? 0 : 1,
-        }}
-      />
-      {isLoading && (
-        <div 
-          className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 animate-pulse"
-        />
-      )}
+        <div className="absolute inset-0 w-full h-full bg-background">
+            <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(var(--primary-rgb),0.3),rgba(255,255,255,0))]"></div>
+            <div className="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(var(--accent-rgb),0.3),rgba(255,255,255,0))]"></div>
+        </div>
+
       <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
       
       <div className="relative z-10 container mx-auto px-4 text-center text-foreground">

@@ -29,30 +29,7 @@ const generateAiBackgroundFlow = ai.defineFlow(
     outputSchema: GenerateAiBackgroundOutputSchema,
   },
   async () => {
-    // Animated SVG to create a floating gradient effect.
-    const svgContent = `<svg width="100%" height="100%" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <radialGradient id="g" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-          <stop offset="0%" stop-color="#0D0D0D" stop-opacity="0"></stop>
-          <stop offset="100%" stop-color="#0D0D0D"></stop>
-        </radialGradient>
-        <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="hsl(var(--primary))" stop-opacity="0.3">
-                <animate attributeName="stop-color" values="hsl(var(--primary)); hsl(var(--accent)); hsl(var(--primary))" dur="10s" repeatCount="indefinite"></animate>
-            </stop>
-            <stop offset="100%" stop-color="hsl(var(--accent))" stop-opacity="0.3">
-                <animate attributeName="stop-color" values="hsl(var(--accent)); hsl(var(--primary)); hsl(var(--accent))" dur="10s" repeatCount="indefinite"></animate>
-            </stop>
-        </linearGradient>
-      </defs>
-      <rect width="100%" height="100%" fill="hsl(var(--background))"></rect>
-      <rect width="100%" height="100%" fill="url(#lg1)"></rect>
-      <rect width="100%" height="100%" fill="url(#g)"></rect>
-    </svg>`;
-    
-    const svgBase64 = Buffer.from(svgContent).toString('base64');
-    const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
-
-    return {backgroundImageDataUri: dataUri};
+    // Return an empty data URI as the background is now handled by CSS.
+    return {backgroundImageDataUri: ''};
   }
 );
