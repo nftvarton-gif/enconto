@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next-intl/client';
+import { usePathname, useRouter, Link } from 'next-intl/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Link } from 'next-intl/client';
 
 import { EncontoLogo } from '@/components/icons';
 import { LANGUAGE_OPTIONS } from '@/lib/constants';
