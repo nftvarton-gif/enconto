@@ -4,6 +4,7 @@ import { TikTokIcon, TelegramIcon } from "@/components/icons";
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/#services", label: "Services" },
+  { href: "/#pricing", label: "Pricing" },
   { href: "/#about", label: "About" },
   { href: "/#contact", label: "Contact" },
 ];
@@ -145,3 +146,50 @@ export const INTEGRATIONS = [
     { name: "CRM Systems", icon: Database },
     { name: "Workflow Tools", icon: Waypoints },
 ];
+
+export const PRICING_PLANS = {
+  monthly: [
+    {
+      name: "Starter",
+      price: "$49",
+      description: "For individuals and small teams getting started with automation.",
+      features: [
+        "10 AI Workflows",
+        "Access to 20+ Connectors",
+        "Basic Monitoring",
+        "Email Support",
+      ],
+      cta: "Choose Starter",
+      message: "Hello! I'm interested in the Starter plan.",
+    },
+    {
+      name: "Pro",
+      price: "$99",
+      description: "For growing businesses that need more power and support.",
+      features: [
+        "50 AI Workflows",
+        "Access to 100+ Connectors",
+        "Advanced Monitoring & Logging",
+        "Priority Support",
+        "Access to Template Library"
+      ],
+      cta: "Choose Pro",
+      isPopular: true,
+      message: "Hello! I'm interested in the Pro plan.",
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      description: "For large organizations with specific security and scalability needs.",
+      features: [
+        "Unlimited AI Workflows",
+        "Premium & Custom Connectors",
+        "SSO/SAML Integration",
+        "Dedicated Support & SLA",
+        "White-labeling Options",
+      ],
+      cta: "Contact Sales",
+      message: "Hello! I'd like to discuss the Enterprise plan for my organization.",
+    },
+  ],
+};
