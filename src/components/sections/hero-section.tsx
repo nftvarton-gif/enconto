@@ -19,9 +19,9 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
       
       <div className="relative z-10 container mx-auto px-4 text-center text-foreground">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 font-headline animate-fade-in-down">
-          AI Automations & Smart Agents for <span className="text-primary">Business Growth</span>
-        </h1>
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 font-headline animate-fade-in-down"
+            dangerouslySetInnerHTML={{ __html: "AI Automations & Smart Agents for <span class='text-primary'>Business Growth</span>" }}
+        />
         <p className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground mb-8" style={{animationDelay: '200ms', animationName: 'fade-in-up'}}>
           Enconto helps businesses integrate automation, n8n-workflows and AI assistants to scale up.
         </p>
