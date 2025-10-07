@@ -1,62 +1,48 @@
 import { Bot, Zap, Plug, TrendingUp, Code2, Users, Blocks, Link as LinkIcon, ShieldCheck, Linkedin, Mail, Phone, MessageSquare, Database, Share2, Component, Waypoints } from "lucide-react";
 import { TikTokIcon, TelegramIcon } from "@/components/icons";
 
-export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/#services", label: "Services" },
-  { href: "/#pricing", label: "Pricing" },
-  { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
-];
-
-export const LANGUAGE_OPTIONS = [
-  { name: 'English', code: 'en', flag: '🇬🇧' },
-  { name: 'Русский', code: 'ru', flag: '🇷🇺' },
-  { name: '中文', code: 'zh', flag: '🇨🇳' },
-]
-
 export const FEATURES = [
   {
     icon: Zap,
-    title: "features.fastDeployment.title",
-    description: "features.fastDeployment.description",
+    title: "Fast Deployment",
+    description: "Quickly integrate our solutions into your existing workflows with minimal downtime.",
   },
   {
     icon: Bot,
-    title: "features.aiAssistants.title",
-    description: "features.aiAssistants.description",
+    title: "AI Assistants",
+    description: "Leverage intelligent AI assistants to automate tasks and enhance productivity.",
   },
   {
     icon: Plug,
-    title: "features.integrations.title",
-    description: "features.integrations.description",
+    title: "100+ Integrations",
+    description: "Connect with a vast ecosystem of tools and platforms to streamline your operations.",
   },
   {
     icon: TrendingUp,
-    title: "features.boostGrowth.title",
-    description: "features.boostGrowth.description",
+    title: "Boost Growth",
+    description: "Scale your business and drive growth with our powerful automation and AI solutions.",
   },
 ];
 
 export const SERVICES = [
   {
-    title: "services.n8n.title",
-    description: "services.n8n.description",
+    title: "n8n Workflow Development",
+    description: "Custom n8n workflows to automate your business processes and connect your apps.",
     icon: Blocks,
   },
   {
-    title: "services.aiAgents.title",
-    description: "services.aiAgents.description",
+    title: "AI Assistants & Agents",
+    description: "Intelligent agents for customer support, data analysis, and internal process optimization.",
     icon: Bot,
   },
   {
-    title: "services.apiIntegrations.title",
-    description: "services.apiIntegrations.description",
+    title: "API Integrations",
+    description: "Seamlessly connect services like TikTok API, CRMs, and payment gateways.",
     icon: LinkIcon,
   },
   {
-    title: "services.customSaaS.title",
-    description: "services.customSaaS.description",
+    title: "Custom SaaS Solutions",
+    description: "Tailor-made SaaS platforms to meet your unique business requirements.",
     icon: ShieldCheck,
   },
 ];
@@ -64,23 +50,23 @@ export const SERVICES = [
 export const WHY_CHOOSE_US = [
     {
       icon: Users,
-      title: "whyChooseUs.expertise.title",
-      description: "whyChooseUs.expertise.description"
+      title: "Expertise in AI & Blockchain",
+      description: "Our team consists of seasoned experts in artificial intelligence and blockchain technology."
     },
     {
       icon: ShieldCheck,
-      title: "whyChooseUs.tailored.title",
-      description: "whyChooseUs.tailored.description"
+      title: "Tailored Solutions",
+      description: "We don't believe in one-size-fits-all. Every solution is customized to your specific needs."
     },
     {
       icon: TrendingUp,
-      title: "whyChooseUs.results.title",
-      description: "whyChooseUs.results.description"
+      title: "Measurable Results",
+      description: "We focus on delivering solutions that provide clear, measurable improvements to your bottom line."
     },
     {
       icon: Bot,
-      title: "whyChooseUs.support.title",
-      description: "whyChooseUs.support.description"
+      title: "Dedicated Support",
+      description: "Our team is always here to provide support and ensure your success."
     },
   ]
 
@@ -89,19 +75,19 @@ export const TESTIMONIALS = [
   {
     name: "John Doe",
     company: "Tech Solutions Inc.",
-    text: "testimonials.johnDoe.text",
+    text: "Enconto transformed our operations. The AI assistants have saved us hundreds of hours per month. Truly a game-changer!",
     avatarSeed: "1",
   },
   {
     name: "Jane Smith",
     company: "Creative Co.",
-    text: "testimonials.janeSmith.text",
+    text: "The n8n workflow automation is seamless. Their team was professional, and the deployment was incredibly fast. Highly recommended!",
     avatarSeed: "2",
   },
   {
     name: "Samuel Lee",
     company: "Growth Ventures",
-    text: "testimonials.samuelLee.text",
+    text: "Working with Enconto on our custom SaaS platform was a fantastic experience. They understood our vision and delivered beyond our expectations.",
     avatarSeed: "3",
   },
 ];
@@ -126,19 +112,19 @@ export const SOCIAL_LINKS = [
 
 export const CONTACT_DETAILS = [
     {
-        name: 'contact.email.name',
+        name: 'Email',
         value: 'alanol@enconto.net',
         icon: Mail,
         href: 'mailto:alanol@enconto.net'
     },
     {
-        name: 'contact.whatsapp.name',
+        name: 'WhatsApp',
         value: '+995 511 488 185',
         icon: Phone,
         href: 'https://wa.me/995511488185'
     },
     {
-        name: 'contact.telegram.name',
+        name: 'Telegram',
         value: '@gptstop',
         icon: MessageSquare,
         href: 'https://t.me/gptstop'

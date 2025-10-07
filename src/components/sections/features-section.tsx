@@ -1,20 +1,16 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { FEATURES } from '@/lib/constants';
 import { AnimateOnScroll } from '@/components/ui/animate-on-scroll';
-import { useTranslations } from 'next-intl';
 
 export function FeaturesSection() {
-  const t = useTranslations('Features');
-  const f = useTranslations('Constants');
-
   return (
     <section id="features" className="py-20 lg:py-32 bg-background">
       <div className="container mx-auto px-4">
         <AnimateOnScroll>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-headline">{t('title')}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold font-headline">Our Advantages</h2>
             <p className="text-lg text-muted-foreground mt-2 max-w-2xl mx-auto">
-              {t('subtitle')}
+              Discover why businesses choose Enconto to power their growth and efficiency.
             </p>
           </div>
         </AnimateOnScroll>
@@ -29,8 +25,8 @@ export function FeaturesSection() {
                       <feature.icon className="w-8 h-8" />
                     </div>
                   </div>
-                  <CardTitle className="text-xl font-semibold">{f(feature.title as any)}</CardTitle>
-                  <CardDescription className="pt-2">{f(feature.description as any)}</CardDescription>
+                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
+                  <CardDescription className="pt-2">{feature.description}</CardDescription>
                 </CardHeader>
               </Card>
             </AnimateOnScroll>

@@ -2,11 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Rocket } from 'lucide-react';
-import { Link } from 'next-intl/navigation';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 export function HeroSection() {
-  const t = useTranslations('Hero');
 
   return (
     <section
@@ -22,18 +20,16 @@ export function HeroSection() {
       
       <div className="relative z-10 container mx-auto px-4 text-center text-foreground">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 font-headline animate-fade-in-down">
-          {t.rich('title', {
-            span: (chunks) => <span className="text-primary">{chunks}</span>
-          })}
+          AI Automations & Smart Agents for <span className="text-primary">Business Growth</span>
         </h1>
         <p className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground mb-8" style={{animationDelay: '200ms', animationName: 'fade-in-up'}}>
-          {t('subtitle')}
+          Enconto helps businesses integrate automation, n8n-workflows and AI assistants to scale up.
         </p>
         <div style={{animationDelay: '400ms', animationName: 'fade-in-up'}}>
           <Button asChild size="lg" className="group">
             <Link href="/#contact">
               <Rocket className="mr-2 h-5 w-5" />
-              {t('cta')}
+              Start Automation Today
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>

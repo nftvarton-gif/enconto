@@ -1,65 +1,23 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
-import { Link, usePathname, useRouter } from 'next-intl/navigation';
+import Link from 'next/link';
 
 import { EncontoLogo } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu, Globe } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { LANGUAGE_OPTIONS } from '@/lib/constants';
-
-function LanguageSwitcher() {
-    const locale = useTranslations.useLocale();
-    const router = useRouter();
-    const pathname = usePathname();
-
-    const switchLocale = (newLocale: string) => {
-        router.replace(pathname, {locale: newLocale});
-    }
-
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                    <Globe className="h-5 w-5" />
-                    <span className="sr-only">Change language</span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                {LANGUAGE_OPTIONS.map((lang) => (
-                    <DropdownMenuItem
-                        key={lang.code}
-                        onSelect={() => switchLocale(lang.code)}
-                        className={cn("flex items-center gap-2", locale === lang.code && "bg-accent")}
-                    >
-                        <span>{lang.flag}</span>
-                        <span>{lang.name}</span>
-                    </DropdownMenuItem>
-                ))}
-            </DropdownMenuContent>
-        </DropdownMenu>
-    );
-}
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const t = useTranslations('Header');
   
   const NAV_LINKS = [
-    { href: "/", label: t('nav.home') },
-    { href: "/#services", label: t('nav.services') },
-    { href: "/#pricing", label: t('nav.pricing') },
-    { href: "/#about", label: t('nav.about') },
-    { href: "/#contact", label: t('nav.contact') },
+    { href: "/", label: "Home" },
+    { href: "/#services", label: "Services" },
+    { href: "/#pricing", label: "Pricing" },
+    { href: "/#about", label: "About" },
+    { href: "/#contact", label: "Contact" },
   ];
 
   useEffect(() => {
@@ -97,9 +55,8 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-2">
-          <LanguageSwitcher />
           <Button asChild>
-            <Link href="/#contact">{t('contactButton')}</Link>
+            <Link href="/#contact">Contact Us</Link>
           </Button>
         </div>
         <div className="md:hidden">
@@ -132,11 +89,8 @@ export function Header() {
                   ))}
                 </nav>
                 <div className="mt-auto space-y-4">
-                    <div className="flex justify-center">
-                        <LanguageSwitcher />
-                    </div>
                     <Button asChild className="w-full">
-                        <Link href="/#contact">{t('contactButton')}</Link>
+                        <Link href="/#contact">Contact Us</Link>
                     </Button>
                 </div>
               </div>

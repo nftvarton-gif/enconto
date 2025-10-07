@@ -4,65 +4,64 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { AnimateOnScroll } from '@/components/ui/animate-on-scroll';
-import { useTranslations } from 'next-intl';
+
+const PRICING_PLANS = {
+  monthly: [
+    {
+      name: "Starter",
+      price: "$49",
+      description: "For individuals and small teams getting started with automation.",
+      features: [
+        "10 AI Workflows",
+        "Access to 20+ Connectors",
+        "Basic Monitoring",
+        "Email Support",
+      ],
+      cta: "Choose Starter",
+      message: "Hello! I'm interested in the Starter plan.",
+    },
+    {
+      name: "Pro",
+      price: "$99",
+      description: "For growing businesses that need more power and support.",
+      features: [
+        "50 AI Workflows",
+        "Access to 100+ Connectors",
+        "Advanced Monitoring & Logging",
+        "Priority Support",
+        "Access to Template Library",
+      ],
+      cta: "Choose Pro",
+      isPopular: true,
+      message: "Hello! I'm interested in the Pro plan.",
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      description: "For large organizations with specific security and scalability needs.",
+      features: [
+        "Unlimited AI Workflows",
+        "Premium & Custom Connectors",
+        "SSO/SAML Integration",
+        "Dedicated Support & SLA",
+        "White-labeling Options",
+      ],
+      cta: "Contact Sales",
+      message: "Hello! I'd like to discuss the Enterprise plan for my organization.",
+    },
+  ],
+};
+
 
 export function PricingSection({ onPlanSelect }: { onPlanSelect: (message: string) => void }) {
-  const t = useTranslations('Pricing');
   
-  const PRICING_PLANS = {
-    monthly: [
-      {
-        name: t('plans.starter.name'),
-        price: "$49",
-        description: t('plans.starter.description'),
-        features: [
-          t('plans.starter.features.0'),
-          t('plans.starter.features.1'),
-          t('plans.starter.features.2'),
-          t('plans.starter.features.3'),
-        ],
-        cta: t('plans.starter.cta'),
-        message: t('plans.starter.message'),
-      },
-      {
-        name: t('plans.pro.name'),
-        price: "$99",
-        description: t('plans.pro.description'),
-        features: [
-          t('plans.pro.features.0'),
-          t('plans.pro.features.1'),
-          t('plans.pro.features.2'),
-          t('plans.pro.features.3'),
-          t('plans.pro.features.4'),
-        ],
-        cta: t('plans.pro.cta'),
-        isPopular: true,
-        message: t('plans.pro.message'),
-      },
-      {
-        name: t('plans.enterprise.name'),
-        price: t('plans.enterprise.price'),
-        description: t('plans.enterprise.description'),
-        features: [
-          t('plans.enterprise.features.0'),
-          t('plans.enterprise.features.1'),
-          t('plans.enterprise.features.2'),
-          t('plans.enterprise.features.3'),
-          t('plans.enterprise.features.4'),
-        ],
-        cta: t('plans.enterprise.cta'),
-        message: t('plans.enterprise.message'),
-      },
-    ],
-  };
-
   return (
     <section id="pricing" className="py-20 lg:py-32 bg-background">
       <div className="container mx-auto px-4">
         <AnimateOnScroll className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold font-headline">{t('title')}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold font-headline">Flexible Plans for Every Team</h2>
           <p className="text-lg text-muted-foreground mt-2 max-w-2xl mx-auto">
-            {t('subtitle')}
+            Choose the right plan to unlock the power of AI automation for your business.
           </p>
         </AnimateOnScroll>
         
@@ -78,7 +77,7 @@ export function PricingSection({ onPlanSelect }: { onPlanSelect: (message: strin
                 {plan.isPopular && (
                   <div className="bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider text-center py-1 rounded-t-lg rounded-b-none flex items-center justify-center gap-1">
                     <Star className="w-4 h-4" />
-                    {t('mostPopular')}
+                    Most Popular
                   </div>
                 )}
                 <CardHeader className="text-center">
@@ -88,7 +87,7 @@ export function PricingSection({ onPlanSelect }: { onPlanSelect: (message: strin
                 <CardContent className="flex-grow space-y-6">
                   <div className="text-center">
                     <span className="text-4xl font-extrabold">{plan.price}</span>
-                    {plan.price !== t('plans.enterprise.price') && <span className="text-muted-foreground">/{t('perMonth')}</span>}
+                    {plan.price !== "Custom" && <span className="text-muted-foreground">/month</span>}
                   </div>
                   <ul className="space-y-3 text-sm">
                     {plan.features.map((feature, i) => (

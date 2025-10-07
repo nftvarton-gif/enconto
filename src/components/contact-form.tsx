@@ -14,23 +14,20 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Loader2, Send } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-
 
 function SubmitButton() {
   const { pending } = useFormStatus();
-  const t = useTranslations('Contact.form');
   return (
     <Button type="submit" disabled={pending} className="w-full">
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          {t('sending')}
+          Sending...
         </>
       ) : (
         <>
           <Send className="mr-2 h-4 w-4" />
-          {t('submit')}
+          Send Message
         </>
       )}
     </Button>
@@ -38,15 +35,14 @@ function SubmitButton() {
 }
 
 export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
-    const t = useTranslations('Contact.form');
     const { toast } = useToast();
     const initialState: ContactFormState = { message: null, status: null };
     const [state, formAction] = useActionState(submitContactForm, initialState);
 
     const formSchema = z.object({
-        name: z.string().min(2, { message: t('validation.name.min') }),
-        email: z.string().email({ message: t('validation.email.invalid') }),
-        message: z.string().min(10, { message: t('validation.message.min') }),
+        name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+        email: z.string().email({ message: "Please enter a valid email address." }),
+        message: z.string().min(10, { message: "Message must be at least 10 characters long." }),
     });
 
     type ContactFormValues = z.infer<typeof formSchema>;
@@ -69,13 +65,13 @@ export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
     useEffect(() => {
         if (state.status === 'success') {
         toast({
-            title: t('toast.success.title'),
-            description: t('toast.success.description'),
+            title: "Message Sent!",
+            description: "Thank you for your message! We will get back to you soon.",
         });
         form.reset();
         } else if (state.status === 'error') {
         toast({
-            title: t('toast.error.title'),
+            title: "Error",
             description: state.message,
             variant: 'destructive',
         });
@@ -83,7 +79,7 @@ export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
         state.fieldErrors?.email && form.setError('email', { message: state.fieldErrors.email[0] });
         state.fieldErrors?.message && form.setError('message', { message: state.fieldErrors.message[0] });
         }
-    }, [state, toast, form, t]);
+    }, [state, toast, form]);
 
     return (
         <Form {...form}>
@@ -93,9 +89,9 @@ export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>{t('name.label')}</FormLabel>
+                            <FormLabel>Full Name</FormLabel>
                             <FormControl>
-                                <Input placeholder={t('name.placeholder')} {...field} />
+                                <Input placeholder="John Doe" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -106,9 +102,9 @@ export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>{t('email.label')}</FormLabel>
+                            <FormLabel>Email Address</FormLabel>
                             <FormControl>
-                                <Input placeholder={t('email.placeholder')} {...field} />
+                                <Input placeholder="you@example.com" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -119,9 +115,9 @@ export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
                     name="message"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>{t('message.label')}</FormLabel>
+                            <FormLabel>Your Message</FormLabel>
                             <FormControl>
-                                <Textarea placeholder={t('message.placeholder')} {...field} rows={5} />
+                                <Textarea placeholder="Tell us how we can help..." {...field} rows={5} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
