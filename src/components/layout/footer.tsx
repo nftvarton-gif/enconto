@@ -1,5 +1,5 @@
 "use client";
-import { Link, usePathname, useRouter } from 'next-intl/navigation';
+import { Link } from 'next-intl/navigation';
 import { EncontoLogo } from '@/components/icons';
 import { CONTACT_DETAILS } from '@/lib/constants';
 import { useTranslations } from 'next-intl';

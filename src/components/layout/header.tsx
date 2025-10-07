@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Link, usePathname, useRouter } from 'next-intl/navigation';
 
 import { EncontoLogo } from '@/components/icons';
-import { LANGUAGE_OPTIONS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Menu, Globe } from 'lucide-react';
@@ -16,9 +15,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { LANGUAGE_OPTIONS } from '@/lib/constants';
 
 function LanguageSwitcher() {
-    const locale = useLocale();
+    const locale = useTranslations.useLocale();
     const router = useRouter();
     const pathname = usePathname();
 
