@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Link } from 'next-intl/link';
-import { usePathname, useRouter } from 'next-intl/navigation';
+import { Link, usePathname, useRouter } from 'next-intl/navigation';
 
 import { EncontoLogo } from '@/components/icons';
 import { LANGUAGE_OPTIONS } from '@/lib/constants';
