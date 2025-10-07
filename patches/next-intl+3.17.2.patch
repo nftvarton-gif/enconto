@@ -1,0 +1,271 @@
+diff --git a/node_modules/next-intl/dist/esm/client/create-link.js b/node_modules/next-intl/dist/esm/client/create-link.js
+index 4554b41a314995a98d1a1b1841315b9c2409f061..550c609d57a2c744f47ec945532ba71217e997a0 100644
+--- a/node_modules/next-intl/dist/esm/client/create-link.js
++++ b/node_modules/next-intl/dist/esm/client/create-link.js
+@@ -1,13 +1,11 @@
+ 'use client';
+-import NextLink from 'next/link';
+ import { jsx as _jsx } from 'react/jsx-runtime';
+ import { forwardRef, useTransition } from 'react';
+ import { useRouter } from '../shared/use-router';
+-import { usePathname } from '../shared/use-pathname';
+ import { locales } from '../shared/locales';
+-import { useLocale } from '../shared/use-locale';
+-import { resolveHref } from './resolve-href';
++import { usePathname } from 'next/navigation';
++import NextLink from 'next/link';
++import { useLocale } from './use-locale';
+ export default function createLink(config) {
+     const { useLocale: useLocaleConfig, pathnames: pathnamesConfig } = config;
+     const pathnames = { ...pathnamesConfig, ...config.navigation.pathnames };
+@@ -19,10 +17,14 @@
+         const router = useRouter({
+             ...config,
+             // The link is only used for navigating, therefore we don't need
+-            // the `useLocale` and `usePathname` fallbacks for RSC.
++            // the `useLocale` and `usePathname` fallbacks for RSC and can
++            // instead use the native Next.js hooks directly.
+             useLocale: undefined,
+             usePathname: undefined
+         });
++        // The native `usePathname` is used here, since we want to resolve the
++        // link against the current URL.
++        const pathname = usePathname();
+         // The native `useLocale` is used here, since we want to resolve the
+         // link against the current locale.
+         const locale = useLocale();
+@@ -35,7 +37,7 @@
+         // resolving the link. In this case, `router.push` will be called
+         // with a path that is relative to the current path.
+         const resolvedPathname = pathname.startsWith('/') ? pathname : '/' + pathname;
+-        const href = resolveHref(resolvedPathname, props.href, locale, locales, pathnames);
++        const href = router.resolveHref(props.href);
+         function handleClick(event) {
+             if (props.onClick)
+                 props.onClick(event);
+diff --git a/node_modules/next-intl/dist/esm/client/index.js b/node_modules/next-intl/dist/esm/client/index.js
+index 99a16f2c69d4d8cae28d447f5f903e1c6677f597..dd9c6c06a8f15dd641f92e86f85958564070a7b4 100644
+--- a/node_modules/next-intl/dist/esm/client/index.js
++++ b/node_modules/next-intl/dist/esm/client/index.js
+@@ -14,6 +14,7 @@
+ export { default as NextIntlClientProvider } from '../shared/NextIntlClientProvider';
+ export { default as useMessages } from '../shared/use-messages';
+ export { default as useTimeZone } from '../shared/use-time-zone';
++export { default as Link } from './link';
+ export * from './use-intl';
+ export { default as useFormatter } from './use-formatter';
+ export { default as useNow } from './use-now';
+diff --git a/node_modules/next-intl/dist/esm/client/link.js b/node_modules/next-intl/dist/esm/client/link.js
+index 102c9162985160b73c4f7495b54203d980de9f4a..f21dc26f634459f2343900b213b31cf318182747 100644
+--- a/node_modules/next-intl/dist/esm/client/link.js
++++ b/node_modules/next-intl/dist/esm/client/link.js
+@@ -1,7 +1,4 @@
+ import createLink from './create-link';
+-import { pathnames } from '../shared/pathnames';
+-import { locales, localePrefix } from '../shared/locales';
+ export default createLink({
+-    locales,
+-    localePrefix,
+-    pathnames
++    ...globalThis.__NEXT_INTL_CONFIG__
+ });
+diff --git a/node_modules/next-intl/dist/esm/middleware.js b/node_modules/next-intl/dist/esm/middleware.js
+index 13d33932e4d9eb6d3e70d47343160a0b2cc11e0e..c9b740523a67732a30b53ac45fcc3f309990e722 100644
+--- a/node_modules/next-intl/dist/esm/middleware.js
+@@ -1,6 +1,5 @@
+-import { format, parse } from 'node:url';
+ import { NextResponse } from 'next/server';
+-import { getBestLocale, receive, send } from './shared/cookie';
++import { getBestLocale, receive, send, set } from './shared/cookie';
+ import { getLocalePrefix, getPathnameWithQuery } from './shared/utils';
+ import { alternate, getAlternate, getHreflang, } from './shared/alternate';
+ function createMiddleware(config) {
+@@ -9,16 +8,17 @@
+         // For the middleware, we need to strip the base path from the
+         // pathname, because the locale detection depends on root-relative
+         // paths.
+-        if (config.basePath) {
+-            const { pathname } = request.nextUrl;
+-            request.nextUrl.pathname = pathname.startsWith(config.basePath)
+-                ? pathname.substring(config.basePath.length)
+-                // The middleware is not running for a URL that contains the
+-                // base path. This can happen when the user navigates to a
+-                // different page but the middleware is not configured to run
+-                // for that page. In this case, we should not do anything.
+-                : '';
+-        }
++        // Re-export `basePath` from the config
++        request.nextUrl.basePath = config.basePath || '';
++        const { pathname } = request.nextUrl;
++        request.nextUrl.pathname = config.basePath
++            ? pathname.startsWith(config.basePath)
++                ? pathname.substring(config.basePath.length)
++                : // The middleware is not running for a URL that contains the
++                    // base path. This can happen when the user navigates to a
++                    // different page but the middleware is not configured to run
++                    // for that page. In this case, we should not do anything.
++                    ''
++            : pathname;
+         const { locale, url } = handleLocale(request, config);
+         let response;
+         if (url) {
+@@ -37,6 +37,12 @@
+             const isPageFound = await isPageFoundForLocale(request, locale, config);
+             if (!isPageFound) {
+                 response = getNotFound(request, config, locale);
++                // We can't attach the cookie to a regular `NextResponse.next()`,
++                // so we have to use a rewrite.
++                if (!response) {
++                    response = NextResponse.rewrite(request.nextUrl);
++                    set(response.headers, locale);
++                }
+             }
+         }
+         // If there's no response, we're not redirecting and just continue.
+@@ -52,14 +58,11 @@
+         response.headers.set('x-next-intl-locale', locale);
+         // Overwrite the `Link` header if present to limit hints to the resolved locale.
+         // This is important for SEO, as we don't want to signal that a page
+-        // is available in all locales when it's not.
++        // is available in all locales when it's not. Note that this is only
++        // set up for `NextResponse.redirect` and `NextResponse.rewrite`,
++        // but not `NextResponse.next()`.
+         if (response.headers.get('Link')) {
+-            const urlObject = parse(format(request.nextUrl), true);
+-            const { search } = urlObject;
+-            delete urlObject.search;
+-            const pathname = format(urlObject);
+-            const link = getAlternate({ ...config, locales: [locale] }, pathname) +
+-                getHreflang(pathname, { ...config, locales: [locale] });
++            const link = getAlternate({ ...config, locales: [locale] }, request.nextUrl.pathname) + getHreflang(request.nextUrl.pathname, { ...config, locales: [locale] });
+             response.headers.set('Link', link);
+         }
+         return response;
+@@ -82,9 +85,15 @@
+             request,
+             locales,
+             defaultLocale,
+-            config.localePrefix
++            config.localePrefix,
++            config.basePath
+         });
+-        return { locale: resolved.locale, url: resolved.url?.toString() };
++        // The URL from the detection can be relative to the server, so we
++        // need to convert it to an absolute URL.
++        const url = resolved.url
++            ? new URL(resolved.url, request.url).toString()
++            : undefined;
++        return { locale: resolved.locale, url };
+     }
+     function handleLocaleFromCookie(request, locales, defaultLocale) {
+         if (config.localeDetection === false)
+@@ -107,10 +116,11 @@
+         return defaultLocale;
+     }
+     function handleLocaleFromPath(request, locales) {
+-        const { pathname } = request.nextUrl;
++        let { pathname } = request.nextUrl;
+         if (config.localePrefix === 'as-needed' &&
+             // A missing locale is not inferred in the root path
+             pathname === '/') {
+             return undefined;
+         }
++        if (config.basePath)
++            pathname = pathname.substring(config.basePath.length);
+         const locale = locales.find((cur) => pathname.startsWith(`/${cur}/`) || pathname === `/${cur}`);
+         return locale;
+     }
+@@ -128,7 +138,7 @@
+         const pathname = getPathnameWithQuery(request.nextUrl);
+         // All other pages are redirects
+         let targetUrl;
+-        if (pathname.startsWith(`/${locale}/`)) {
++        if (pathname.startsWith(`/${locale}`)) {
+             targetUrl = pathname.substring(`/${locale}`.length) || '/';
+         }
+         else {
+@@ -165,7 +175,7 @@
+     function getNotFound(request, config, locale) {
+         const { pathname } = request.nextUrl;
+         // The 404 page needs to be rendered in the locale of the request.
+-        if (config.localePrefix) {
++        if (config.localePrefix !== 'never') {
+             request.nextUrl.pathname = `/${locale}${pathname}`;
+         }
+         // A `rewrite` is used here instead of `next()` because the 404
+diff --git a/node_modules/next-intl/dist/esm/server.js b/node_modules/next-intl/dist/esm/server.js
+index c70498b3ca0468e2118318d18b9588d924d57c74..4f83b28b7e289ac992095f9e7116812cf518335f 100644
+--- a/node_modules/next-intl/dist/esm/server.js
++++ b/node_modules/next-intl/dist/esm/server.js
+@@ -1,13 +1,11 @@
+-import { format, parse } from 'node:url';
+ import { headers, cookies } from 'next/headers';
+ import { redirect } from 'next/navigation';
+ import { cache } from 'react';
+ import { negotiate, receive } from './shared/cookie';
+-import { getAlternate, getHreflang } from './shared/alternate';
+ import { getNow, getFormatter, getTimeZone, getMessages, createTranslator, getTranslations, } from './shared/core';
+-import { resolveHref } from './client/resolve-href';
+ import { locales, localePrefix } from './shared/locales';
+ import { pathnames, getPathname, } from './shared/pathnames';
++import { getAlternate, getHreflang } from './shared/alternate';
+ const getRequestLocale = cache(function getRequestLocale() {
+     const header = headers().get('x-next-intl-locale');
+     if (header) {
+@@ -42,10 +40,7 @@
+         // the link if necessary.
+         const requestPathname = getRequestPathname({ host, locale });
+         const resolvedPathname = pathnames[href.pathname]
+-            ? resolveHref(requestPathname, href, locale, locales, pathnames)
++            ? router.resolveHref(href)
+             : href.pathname;
+         if (resolvedPathname == null) {
+             throw new Error('Could not resolve href');
+@@ -58,9 +53,6 @@
+                 locale
+             });
+             redirect(finalHref);
+-        },
+-        resolveHref: (href) => {
+-            return resolveHref(requestPathname, href, locale, locales, pathnames);
+         }
+     };
+     // Adding a getter for `locale` for backwards compatibility
+@@ -107,11 +99,8 @@
+     const locale = getRequestLocale();
+     const requestPathname = getPathname({ locale });
+     return alternate(config, 
+-    // `requestPathname` can be `null` when the matcher of the
+-    // middleware doesn't match the request. In this case, we can't
+-    // generate alternate links.
+-    requestPathname || '/', getHreflang(requestPathname || '/', config));
++    // `requestPathname` can be `null` when the matcher of the middleware
++    // doesn't match the request. In this case, we can't generate
++    // alternate links.
++    requestPathname || '/');
+ }
+-const getPathnameWithQuery = cache(function getPathnameWithQuery() {
+-    const url = parse(headers().get('x-next-intl-path') || '', true);
+-    const { pathname, search } = url;
+-    if (!pathname)
+-        return null;
+-    return pathname + (search || '');
+-});
+diff --git a/node_modules/next-intl/link.d.ts b/node_modules/next-intl/link.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..f6b67776103bb2a8c7ed67d344d5671d182b8a4a
+--- /dev/null
++++ b/node_modules/next-intl/link.d.ts
+@@ -0,0 +1,2 @@
++import Link from './dist/client/link';
++export * from './dist/client/link';
++export default Link;
+\ No newline at end of file
+diff --git a/node_modules/next-intl/navigation.d.ts b/node_modules/next-intl/navigation.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..df6524220b332464736f1b327b73859d0408d669
+--- /dev/null
++++ b/node_modules/next-intl/navigation.d.ts
+@@ -0,0 +1 @@
++export * from './dist/client/navigation';
+\ No newline at end of file
