@@ -10,7 +10,7 @@ const contactFormSchema = z.object({
 
 export type ContactFormState = {
   message: string;
-  status: 'success' | 'error';
+  status: 'success' | 'error' | 'unconfigured';
   fieldErrors?: Record<string, string[] | undefined>;
 } | {
   message: null;
@@ -24,8 +24,7 @@ async function sendTelegramNotification(name: string, email: string, message: st
 
   if (!botToken || !chatId) {
     console.error('Telegram Bot Token or Chat ID is not configured.');
-    // Silently fail if not configured, but log the error on the server.
-    return;
+    throw new Error('Server is not configured to send messages. Please contact the administrator.');
   }
 
   const telegramApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
@@ -38,20 +37,21 @@ New message from your website!
 ${message}
   `;
 
-  try {
-    await fetch(telegramApiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text,
-        parse_mode: 'Markdown',
-      }),
-    });
-  } catch (error) {
-    console.error('Failed to send Telegram notification:', error);
+  const response = await fetch(telegramApiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: text,
+      parse_mode: 'Markdown',
+    }),
+  });
+
+  if (!response.ok) {
+    console.error('Failed to send Telegram notification:', await response.text());
+    throw new Error('Failed to send Telegram notification.');
   }
 }
 
@@ -60,6 +60,13 @@ export async function submitContactForm(
   prevState: ContactFormState,
   formData: FormData
 ): Promise<ContactFormState> {
+
+  if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
+    return {
+        message: "The contact form is not configured on the server. Please add TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID to the .env file.",
+        status: 'unconfigured',
+    }
+  }
   
   const validatedFields = contactFormSchema.safeParse({
     name: formData.get('name'),
@@ -78,39 +85,19 @@ export async function submitContactForm(
 
   const { name, email, message } = validatedFields.data;
 
-  // Send notification to Telegram
-  await sendTelegramNotification(name, email, message);
-
-
-  // The original webhook call is kept, in case it's still needed.
-  // It can be removed if Telegram is the only notification channel.
-  const webhookUrl = 'https://n8n.enconto.net/webhook/contact';
-
   try {
-    const response = await fetch(webhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(validatedFields.data),
-    });
-
-    if (!response.ok) {
-      // Don't throw an error to the user if the webhook fails, but log it.
-      console.error(`Webhook responded with status: ${response.status}`);
-    }
-
+    // Send notification to Telegram
+    await sendTelegramNotification(name, email, message);
+    
     return {
       message: 'Thank you for your message! We will get back to you soon.',
       status: 'success',
     };
   } catch (error) {
-    console.error('Failed to submit contact form to webhook:', error);
-    // Even if the webhook fails, the Telegram message might have succeeded.
-    // Return a success message to the user.
+    console.error('Failed to submit contact form:', error);
     return {
-      message: 'Thank you for your message! We will get back to you soon.',
-      status: 'success',
+      message: 'An error occurred while sending your message. Please try again later.',
+      status: 'error',
     };
   }
 }

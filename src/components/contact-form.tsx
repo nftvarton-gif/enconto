@@ -13,7 +13,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Loader2, Send } from 'lucide-react';
+import { Loader2, Send, AlertTriangle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -66,7 +67,7 @@ export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
         if (state.status === 'success') {
         toast({
             title: "Message Sent!",
-            description: "Thank you for your message! We will get back to you soon.",
+            description: state.message,
         });
         form.reset();
         } else if (state.status === 'error') {
@@ -84,6 +85,15 @@ export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
     return (
         <Form {...form}>
             <form action={formAction} className="space-y-6">
+                {state.status === 'unconfigured' && (
+                    <Alert variant="destructive">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertTitle>Form Not Configured</AlertTitle>
+                        <AlertDescription>
+                            The contact form is not fully set up. Please provide the Telegram API keys in the server configuration.
+                        </AlertDescription>
+                    </Alert>
+                )}
                 <FormField
                     control={form.control}
                     name="name"
