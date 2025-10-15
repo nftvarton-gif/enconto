@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import '../globals.css';
 import { cn } from '@/lib/utils';
@@ -38,7 +39,7 @@ export default async function LocaleLayout({
   // This line is crucial for next-intl to work in server components.
   unstable_setRequestLocale(locale);
   
-  const messages = await getMessages();
+  const messages = await getMessages({locale});
  
   return (
     <html lang={locale} className="dark">
