@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useEffect } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -36,7 +36,7 @@ function SubmitButton() {
 export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
     const { toast } = useToast();
     const initialState: ContactFormState = { message: null, status: null };
-    const [state, formAction] = useActionState(submitContactForm, initialState);
+    const [state, formAction] = useFormState(submitContactForm, initialState);
 
     const formSchema = z.object({
         name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -77,6 +77,12 @@ export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
         state.fieldErrors?.name && form.setError('name', { message: state.fieldErrors.name[0] });
         state.fieldErrors?.email && form.setError('email', { message: state.fieldErrors.email[0] });
         state.fieldErrors?.message && form.setError('message', { message: state.fieldErrors.message[0] });
+        } else if (state.status === 'unconfigured') {
+          toast({
+            title: "Form Not Configured",
+            description: state.message,
+            variant: 'destructive',
+        });
         }
     }, [state, toast, form]);
 

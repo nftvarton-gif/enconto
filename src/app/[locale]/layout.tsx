@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next';
 import '../globals.css';
 import { cn } from '@/lib/utils';
@@ -6,9 +5,8 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
 import {NextIntlClientProvider} from 'next-intl';
-import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-
+import {getMessages, unstable_setRequestLocale} from 'next-intl/server';
+ 
 export const metadata: Metadata = {
   title: 'EncontoAI - AI Automations & Smart Agents',
   description: 'AI Automations, Smart Agents, n8n integrations, and SaaS solutions for business growth.',
@@ -25,21 +23,16 @@ export function generateStaticParams() {
  
 export default async function LocaleLayout({
   children,
-  params,
+  params: {locale},
 }: {
   children: React.ReactNode;
   params: {locale: string};
 }) {
-  const { locale } = await params;
-  // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale)) {
-    notFound();
-  }
-  
-  // This line is crucial for next-intl to work in server components.
+  // Enable static rendering
   unstable_setRequestLocale(locale);
-  
-  const messages = await getMessages({locale});
+
+  // Receive messages provided in `i18n.ts`
+  const messages = await getMessages();
  
   return (
     <html lang={locale} className="dark">

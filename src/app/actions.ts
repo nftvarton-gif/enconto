@@ -75,11 +75,10 @@ export async function submitContactForm(
   });
 
   if (!validatedFields.success) {
-    const errors = validatedFields.error.flatten().fieldErrors;
     return {
       message: "Please correct the errors in the form.",
       status: 'error',
-      fieldErrors: errors,
+      fieldErrors: validatedFields.error.flatten().fieldErrors,
     };
   }
 
@@ -95,8 +94,9 @@ export async function submitContactForm(
     };
   } catch (error) {
     console.error('Failed to submit contact form:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred while sending your message. Please try again later.';
     return {
-      message: 'An error occurred while sending your message. Please try again later.',
+      message: errorMessage,
       status: 'error',
     };
   }

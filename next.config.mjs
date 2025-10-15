@@ -1,7 +1,5 @@
 import createNextIntlPlugin from 'next-intl/plugin';
 
-const withIntl = createNextIntlPlugin('./src/i18n.ts');
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -29,5 +27,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 };
+
+const withIntl = createNextIntlPlugin('./src/i18n.ts');
 
 export default withIntl(nextConfig);
