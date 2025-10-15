@@ -24,11 +24,12 @@ export function generateStaticParams() {
  
 export default function LocaleLayout({
   children,
-  params: {locale}
+  params
 }: Readonly<{
   children: React.ReactNode;
   params: {locale: string};
 }>) {
+  const { locale } = params;
   unstable_setRequestLocale(locale);
   const messages = useMessages();
  
