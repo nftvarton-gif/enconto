@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
 import {NextIntlClientProvider} from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'EncontoAI - AI Automations & Smart Agents',
@@ -23,12 +24,15 @@ export function generateStaticParams() {
  
 export default async function LocaleLayout({
   children,
-  params,
+  params: { locale },
 }: {
   children: React.ReactNode;
-  params: Promise<{locale: string}>;
+  params: {locale: string};
 }) {
-  const { locale } = await params;
+  if (!locales.includes(locale)) {
+    notFound();
+  }
+  
   const messages = await getMessages();
  
   return (
