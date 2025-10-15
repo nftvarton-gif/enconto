@@ -23,12 +23,11 @@ export function generateStaticParams() {
  
 export default async function LocaleLayout({
   children,
-  params,
+  params: { locale },
 }: {
   children: React.ReactNode;
-  params: {locale: string};
+  params: { locale: string };
 }) {
-  const { locale } = params;
   const messages = await getMessages();
  
   return (
