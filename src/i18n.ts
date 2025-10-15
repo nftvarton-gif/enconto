@@ -1,5 +1,5 @@
-import {getRequestConfig} from 'next-intl/server';
 import {notFound} from 'next/navigation';
+import {getRequestConfig} from 'next-intl/server';
  
 // A list of all locales that are supported
 const locales = ['en', 'ru'];
