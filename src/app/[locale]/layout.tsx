@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
-import {NextIntlClientProvider, useMessages} from 'next-intl';
+import {NextIntlClientProvider} from 'next-intl';
 import { getMessages } from 'next-intl/server';
 
 export const metadata: Metadata = {
@@ -29,8 +29,8 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: {locale: string};
 }) {
-  const messages = await getMessages();
   const locale = params.locale;
+  const messages = await getMessages();
  
   return (
     <html lang={locale} className="dark">
