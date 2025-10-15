@@ -6,7 +6,6 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
 import {NextIntlClientProvider, useMessages} from 'next-intl';
-import {unstable_setRequestLocale} from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'EncontoAI - AI Automations & Smart Agents',
@@ -24,13 +23,11 @@ export function generateStaticParams() {
  
 export default function LocaleLayout({
   children,
-  params
-}: Readonly<{
+  params: {locale}
+}: {
   children: React.ReactNode;
   params: {locale: string};
-}>) {
-  const locale = params.locale;
-  unstable_setRequestLocale(locale);
+}) {
   const messages = useMessages();
  
   return (
