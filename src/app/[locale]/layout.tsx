@@ -29,11 +29,12 @@ export default function LocaleLayout({
   children: React.ReactNode;
   params: {locale: string};
 }>) {
-  unstable_setRequestLocale(params.locale);
+  const locale = params.locale;
+  unstable_setRequestLocale(locale);
   const messages = useMessages();
  
   return (
-    <html lang={params.locale} className="dark">
+    <html lang={locale} className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -47,7 +48,7 @@ export default function LocaleLayout({
           'min-h-screen bg-background font-body antialiased flex flex-col',
         )}
       >
-        <NextIntlClientProvider locale={params.locale} messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <Header />
           <main className="flex-grow">{children}</main>
           <Footer />
