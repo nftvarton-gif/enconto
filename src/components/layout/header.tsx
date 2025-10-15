@@ -6,12 +6,23 @@ import Link from 'next/link';
 import { EncontoLogo } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
+import { Menu, Languages } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { usePathname, useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const NAV_LINKS = [
     { href: "/", label: "Home" },
     { href: "/#services", label: "Services" },
@@ -27,6 +38,12 @@ export function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const onSelectLocale = (locale: string) => {
+    startTransition(() => {
+      router.replace(`/${locale}${pathname.startsWith('/ru') || pathname.startsWith('/en') ? pathname.slice(3) : pathname}`);
+    });
+  }
 
   return (
     <header
@@ -55,6 +72,22 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-2">
+           <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Languages className="h-5 w-5" />
+                <span className="sr-only">Change language</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onSelectLocale('en')}>
+                English
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onSelectLocale('ru')}>
+                Русский
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button asChild>
             <Link href="/#contact">Contact Us</Link>
           </Button>
@@ -89,6 +122,22 @@ export function Header() {
                   ))}
                 </nav>
                 <div className="mt-auto space-y-4">
+                     <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="w-full">
+                            <Languages className="mr-2 h-5 w-5" />
+                            Change language
+                        </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-[--radix-dropdown-menu-trigger-width]]">
+                        <DropdownMenuItem onClick={() => onSelectLocale('en')}>
+                            English
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onSelectLocale('ru')}>
+                            Русский
+                        </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                     <Button asChild className="w-full">
                         <Link href="/#contact">Contact Us</Link>
                     </Button>

@@ -4,19 +4,27 @@ import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
-
+import {NextIntlClientProvider} from 'next-intl';
+import {getLocale, getMessages} from 'next-intl/server';
+ 
 export const metadata: Metadata = {
   title: 'EncontoAI - AI Automations & Smart Agents',
   description: 'AI Automations, Smart Agents, n8n integrations, and SaaS solutions for business growth.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
-
-export default function RootLayout({
+ 
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+ 
   return (
-    <html lang="en" className="dark">
+    <html lang={locale} className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -30,10 +38,12 @@ export default function RootLayout({
           'min-h-screen bg-background font-body antialiased flex flex-col',
         )}
       >
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <Toaster />
+        <NextIntlClientProvider messages={messages}>
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+          <Toaster />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
