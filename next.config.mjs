@@ -1,4 +1,3 @@
-
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withIntl = createNextIntlPlugin('./src/i18n.ts');
