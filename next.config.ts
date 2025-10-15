@@ -1,10 +1,9 @@
+import createNextIntlPlugin from 'next-intl/plugin';
 import type { NextConfig } from 'next';
 
+const withIntl = createNextIntlPlugin('./src/i18n.ts');
+
 const nextConfig: NextConfig = {
-  i18n: {
-    locales: ['en', 'ru'],
-    defaultLocale: 'en',
-  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -19,4 +18,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withIntl(nextConfig);
