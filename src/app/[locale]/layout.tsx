@@ -24,12 +24,13 @@ export function generateStaticParams() {
  
 export default async function LocaleLayout({
   children,
-  params: {locale}
+  params,
 }: {
   children: React.ReactNode;
   params: {locale: string};
 }) {
   const messages = await getMessages();
+  const locale = params.locale;
  
   return (
     <html lang={locale} className="dark">
