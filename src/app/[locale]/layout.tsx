@@ -24,16 +24,17 @@ export function generateStaticParams() {
  
 export default async function LocaleLayout({
   children,
-  params,
+  params: { locale },
 }: {
   children: React.ReactNode;
-  params: Promise<{locale: string}>;
+  params: {locale: string};
 }) {
-  const { locale } = await params;
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale)) {
     notFound();
   }
+  
+  // This line is crucial for next-intl to work in server components.
   unstable_setRequestLocale(locale);
   
   const messages = await getMessages();
