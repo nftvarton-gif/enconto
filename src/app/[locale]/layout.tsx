@@ -23,11 +23,12 @@ export function generateStaticParams() {
  
 export default function LocaleLayout({
   children,
-  params: {locale}
+  params,
 }: {
   children: React.ReactNode;
   params: {locale: string};
 }) {
+  const { locale } = params;
   const messages = useMessages();
  
   return (
