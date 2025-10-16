@@ -24,8 +24,9 @@ async function sendTelegramNotification(name: string, email: string, message: st
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (!botToken || !chatId) {
-    console.log('Telegram Bot Token or Chat ID is not configured. Simulating success.');
-    return Promise.resolve();
+    // This part should now only trigger if the variables are truly missing,
+    // and it will now throw an error that will be caught below.
+    throw new Error('Telegram Bot Token or Chat ID is not configured.');
   }
 
   const telegramApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
@@ -55,6 +56,7 @@ ${message}
     } else {
       console.error('Unknown error sending Telegram notification:', error);
     }
+    // Re-throw the error to be caught by the calling function.
     throw new Error('Failed to send Telegram notification.');
   }
 }
