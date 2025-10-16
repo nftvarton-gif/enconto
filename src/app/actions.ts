@@ -1,6 +1,7 @@
 'use server';
 
 import { z } from 'zod';
+import axios from 'axios';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -24,7 +25,6 @@ async function sendTelegramNotification(name: string, email: string, message: st
 
   if (!botToken || !chatId) {
     console.log('Telegram Bot Token or Chat ID is not configured. Simulating success.');
-    // Simulate a successful send for UI purposes if keys are not present.
     return Promise.resolve();
   }
 
@@ -38,20 +38,23 @@ New message from your website!
 ${message}
   `;
 
-  const response = await fetch(telegramApiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  try {
+    const response = await axios.post(telegramApiUrl, {
       chat_id: chatId,
       text: text,
       parse_mode: 'Markdown',
-    }),
-  });
+    });
 
-  if (!response.ok) {
-    console.error('Failed to send Telegram notification:', await response.text());
+    if (response.status !== 200) {
+      console.error('Failed to send Telegram notification:', response.data);
+      throw new Error('Failed to send Telegram notification.');
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error sending Telegram notification:', error.response?.data || error.message);
+    } else {
+      console.error('Unknown error sending Telegram notification:', error);
+    }
     throw new Error('Failed to send Telegram notification.');
   }
 }
