@@ -1,0 +1,41 @@
+name: Firebase App Hosting Deploy (with GitHub Secrets)
+
+on:
+push:
+branches: [ "main" ]
+
+permissions:
+contents: read
+id-token: write
+
+jobs:
+deploy:
+runs-on: ubuntu-latest
+steps:
+- name: Checkout
+uses: actions/checkout@v4
+
+  - name: Generate apphosting.yaml from secrets
+    run: |
+      cat > apphosting.yaml << 'YAML'
+      runtime:
+        env: node
+      env:
+        - variable: TELEGRAM_BOT_TOKEN
+          value: "${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          availability:
+            - RUNTIME
+        - variable: TELEGRAM_CHAT_ID
+          value: "${{ secrets.TELEGRAM_CHAT_ID }}"
+          availability:
+            - RUNTIME
+      YAML
+      echo "Generated apphosting.yaml"
+
+  - name: Deploy to Firebase App Hosting
+    uses: FirebaseExtended/action-hosting-deploy@v0
+    with:
+      repoToken: ${{ secrets.GITHUB_TOKEN }}
+      projectId: studio-6632763072-a7602
+      site: enconto
+      channelId: live
