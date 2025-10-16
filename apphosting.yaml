@@ -2,8 +2,12 @@ runtime:
   env: node
 
 env:
-  variables:
-    TELEGRAM_BOT_TOKEN: "8301077915:AAFWbUs0ILa6-0t-l8xY7KzagRwCe-baLZA"
-    TELEGRAM_CHAT_ID: "6265097695"
-  availability:
-    - RUNTIME
+  - variable: TELEGRAM_BOT_TOKEN
+    value: "8301077915:AAFWbUs0ILa6-0t-l8xY7KzagRwCe-baLZA"
+    availability:
+      - RUNTIME
+
+  - variable: TELEGRAM_CHAT_ID
+    value: "6265097695"
+    availability:
+      - RUNTIME
