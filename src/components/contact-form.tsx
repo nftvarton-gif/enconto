@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -36,7 +36,7 @@ function SubmitButton() {
 export function ContactForm({ prefillMessage }: { prefillMessage?: string }) {
     const { toast } = useToast();
     const initialState: ContactFormState = { message: null, status: null };
-    const [state, formAction] = useFormState(submitContactForm, initialState);
+    const [state, formAction] = useActionState(submitContactForm, initialState);
 
     const formSchema = z.object({
         name: z.string().min(2, { message: "Name must be at least 2 characters." }),
