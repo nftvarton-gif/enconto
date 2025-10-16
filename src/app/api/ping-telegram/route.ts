@@ -14,7 +14,11 @@ export async function GET() {
   const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chat_id: chatId, text: "Ping from enconto.net" }),
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: "Ping from enconto.net ✅",
+      parse_mode: "HTML"
+    }),
     cache: "no-store"
   });
 
